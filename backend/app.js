@@ -11,6 +11,7 @@ import userRouter from "./routes/users.js";
 // import contactRouter from "./Routes/contact.js";
 import brandRouter from "./routes/brand.js";
 import productRouter from "./routes/product.js";
+import proCategoryRouter from "./routes/procategory.js";
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 8000;
@@ -37,6 +38,7 @@ app.use("/api/v1/auth", authRouter); //domain/api/v1/auth
 app.use("/api/v1/brands", brandRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/procategories", proCategoryRouter);
 // app.use("/api/v1/doctors", doctorRouter);
 // app.use("/api/v1/reviews", reviewRouter);
 // app.use("/api/v1/bookings", bookingRouter);
