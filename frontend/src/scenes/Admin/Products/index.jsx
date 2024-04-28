@@ -1,17 +1,15 @@
 import { useState } from "react";
+import { useNavigate} from 'react-router-dom';
 import { Box, Typography, useTheme, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, Button} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import { mockDataTeam} from "../../../data/mockData";
-import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
-import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
-import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "../../../components/Header/Header";
-import EditForm from "../form/EditForm";
+import EditProductForm from "../productsForm/EditProductForm";
 
-const Team = () => {
+const Products = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [data, setData] = useState(mockDataTeam);
@@ -19,7 +17,7 @@ const Team = () => {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [editItem, setEditItem] = useState(null);
     const [deleteId, setDeleteId] = useState(null);
-
+    const negative = useNavigate();
 
     const handleUpdate = (updatedItem) => {
       const newData = data.map(item => {
@@ -56,62 +54,61 @@ const Team = () => {
     const handleCloseDeleteDialog = () => {
       setOpenDeleteDialog(false);
     };
+    const handleAddProduct = () => {
+      negative.push("/productsForm/AddProductForm"); // Corrected path according to the project structure
+    };
+
 
     const columns = [
-        {field: "id", headerName: "ID"},
+        {field: "productId", headerName: "Product ID"},
         {field: "name", headerName: "Name", flex: 1, cellClassName: "name-column--cell"},
-        {field: "age", headerName: "Age", type: "number", headerAlign: "left", align: "left"},
-        {field: "phone", headerName: "Phone Number",flex: 1},
-        {field: "email",headerName: "Email", flex: 1},
+        {field: "category", headerName: "Category", flex: 1, cellClassName: "name-column--cell"},
         {
-            field: "access", 
-            headerName: "Access Level", 
-            flex: 1, 
-            renderCell: ({row: {access}}) =>{
-                return (
-                    <Box 
-                        width="60%" 
-                        m="0 auto" 
-                        p="5px" 
-                        display="flex" 
-                        justifyContent="center" 
-                        backgroundColor={access === "admin" ? colors.greenAccent[600]:colors.greenAccent[700]} 
-                        borderRadius="4px"
-                    >
-                        {access==="admin" && <AdminPanelSettingsOutlinedIcon/>}
-                        {access==="manager" && <SecurityOutlinedIcon/>}
-                        {access==="user" && <LockOpenOutlinedIcon/>}
-
-                        <Typography color={colors.grey[100]} sx={{ml: "5px"}}>
-                            {access}
-                        </Typography>
-                    </Box>
-                );
-            }
-          },
-          {
-            field: "actions",
-            headerName: "Actions",
-            sortable: false,
-            width: 150,
-            renderCell: (params) => (
-                <>
-                    <IconButton onClick={() => handleClickOpenEditDialog(params.row)} color="primary">
-                        <EditIcon />
-                    </IconButton>
-                    <IconButton onClick={() => handleClickOpenDeleteDialog(params.id)} color="secondary">
-                        <DeleteIcon />
-                    </IconButton>
-                </>
-            )
-        }
+          field: "cost", 
+          headerName: "Cost", 
+          flex: 1,
+          renderCell:(params) =>(
+              <Typography color={colors.greenAccent[500]}>
+                  ${params.row.cost}
+              </Typography>
+          ),
+        },
+        {field: "description", headerName: "Description",flex: 2},
+        {
+          field: "actions",
+          headerName: "Actions",
+          sortable: false,
+          width: 150,
+          renderCell: (params) => (
+              <>
+                  <IconButton onClick={() => handleClickOpenEditDialog(params.row)} color="primary">
+                      <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={() => handleClickOpenDeleteDialog(params.id)} color="secondary">
+                      <DeleteIcon />
+                  </IconButton>
+              </>
+          )
+      }
     ]
 
     return(
         <Box m="20px">
-            <Header title="TEAM" subtitle="Managing Team Members"/>
+            <Header title="PRODUCTS" subtitle="Managing Products"/>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={handleAddProduct}
+                sx={{ 
+                  mt: 2, 
+                  mb: 4,
+                  backgroundColor:'secondary.main',
+                }}
+            >
+                Add New Product
+            </Button>
             <Box
-                m="40px 0 0 0"
+                m="10px 0 0 0"
                 height="100vh"
                 sx={{
                   "& .MuiDataGrid-root": {
@@ -144,9 +141,9 @@ const Team = () => {
                     columns={columns}
                 />
             </Box>
-              <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
+            <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
                   <DialogContent>
-                      <EditForm userData={editItem} updateUser={handleUpdate} />
+                      <EditProductForm userData={editItem} updateUser={handleUpdate} />
                   </DialogContent>
                   <DialogActions>
                       <Button onClick={handleCloseEditDialog}>Close</Button>
@@ -177,4 +174,4 @@ const Team = () => {
     );
 };
 
-export default Team;
+export default Products;
