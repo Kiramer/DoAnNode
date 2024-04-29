@@ -1,4 +1,4 @@
-import { Box, IconButton, styled, useTheme } from "@mui/material";
+import { Box, IconButton, useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../../theme";
 import { InputBase } from "@mui/material";
 import LightModeOutLinedIcon from "@mui/icons-material/LightModeOutlined";
