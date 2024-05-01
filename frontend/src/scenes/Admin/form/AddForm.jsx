@@ -1,132 +1,162 @@
-import { Box, Button, TextField } from "@mui/material";
-import { useMediaQuery } from "@mui/material"; // Sửa lại cách import useMediaQuery
-import { Formik } from "formik";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { Formik, Field, Form } from "formik";
 import * as yup from "yup";
 import Header from "../../../components/Header/Header";
+import { useState } from "react";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { getBase64 } from "../../../utils/base64";
 
-const AddForm = () => {
-    const isNonMobile = useMediaQuery("(min-width:600px)");
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 
-    // Định nghĩa schema và initialValues trong component để đảm bảo chúng được đọc đúng
-    const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
+const AddForm = ({ createUser }) => {
+  const phoneRegExp =
+    /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
+  const [base64Image, setBase64Image] = useState("");
 
-    const checkoutSchema = yup.object().shape({
-        firstName: yup.string().required("required"),
-        lastName: yup.string().required("required"),
-        email: yup.string().email("invalid email").required("required"),
-        contact: yup
-            .string()
-            .matches(phoneRegExp, "Phone number is not valid")
-            .required("required"),
-        address1: yup.string().required("required"),
-    });
+  const checkoutSchema = yup.object().shape({
+    name: yup.string().required("required"),
+    email: yup.string().email("invalid email").required("required"),
+    phone: yup
+      .string()
+      .matches(phoneRegExp, "Phone number is not valid")
+      .required("required"),
+    role: yup.string().required("Access level is required"),
+    address: yup.string().required("required"),
+    password: yup.string().required("required"),
+  });
 
-    const initialValues = {
-        firstName: "",
-        lastName: "",
-        email: "",
-        contact: "",
-        address1: "",
-    };
-
-    const handleFormSubmit = (values) => {
-        console.log(values);
+  const initialValues = {
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    address: "",
+    role: "",
+    image: "",
+  };
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    try {
+      const base64 = await getBase64(file);
+      setBase64Image(base64);
+    } catch (error) {
+      console.error(error);
+      setBase64Image("");
     }
+  };
+  return (
+    <Box m={2}>
+      <Header title="CREATE USER" subtitle="Create New User" />
+      <Formik
+        onSubmit={(values) => {
+          values.image = base64Image;
+          createUser(values);
+        }}
+        initialValues={initialValues}
+        validationSchema={checkoutSchema}
+      >
+        {() => (
+          <Form style={{ width: "500px" }}>
+            <Box display="flex" flexDirection={"column"} m={2} gap={2}>
+              <Field
+                as={TextField}
+                fullWidth
+                label="Name"
+                name="name"
+                variant="outlined"
+              />
+              <Field
+                as={TextField}
+                fullWidth
+                label="Email"
+                name="email"
+                variant="outlined"
+              />
+              <Field
+                as={TextField}
+                fullWidth
+                label="Password"
+                name="password"
+                variant="outlined"
+              />
+              <Field
+                as={TextField}
+                fullWidth
+                label="Contact Number"
+                name="phone"
+                variant="outlined"
+              />
+              <Field
+                as={TextField}
+                fullWidth
+                label="Address"
+                name="address"
+                variant="outlined"
+              />
+              <FormControl fullWidth sx={{ gridColumn: "span 4" }}>
+                <InputLabel id="access-label">Role</InputLabel>
+                <Field
+                  as={Select}
+                  labelId="access-label"
+                  label="Role"
+                  name="role"
+                >
+                  <MenuItem value="admin">Admin</MenuItem>
+                  <MenuItem value="user">User</MenuItem>
+                </Field>
+              </FormControl>
+              <InputLabel id="image-label">Image:</InputLabel>
+              <img
+                src={base64Image}
+                style={{ width: "60px", borderRadius: "50%" }}
+                alt=""
+              />
+              <Button
+                component="label"
+                role={undefined}
+                variant="contained"
+                tabIndex={-1}
+                startIcon={<CloudUploadIcon />}
+                onChange={handleImageUpload}
+              >
+                Upload file
+                <VisuallyHiddenInput
+                  name="image"
+                  labelId="image-label"
+                  type="file"
+                />
+              </Button>
+            </Box>
 
-    return (
-        <Box m="20px">
-            <Header title="CREATE USER" subtitle="Create New User Profile"/>
-            <Formik
-                onSubmit={handleFormSubmit}
-                initialValues={initialValues}
-                validationSchema={checkoutSchema}
-            >
-                {({
-                    values,
-                    errors,
-                    touched,
-                    handleBlur,
-                    handleChange,
-                    handleSubmit,
-                }) => (
-                    <form onSubmit={handleSubmit}>
-                        <Box display="grid" m="40px 0 0 0" gap="30px" gridTemplateColumns="repeat(4, minmax(0, 1fr))" sx={{"& > div": { gridColumn: isNonMobile ? undefined : "span 4" }}}>
-                            <TextField
-                                fullWidth
-                                variant="filled"
-                                type="text"
-                                label="First Name"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.firstName}
-                                name="firstName"
-                                error={!!touched.firstName && !!errors.firstName}
-                                helperText={touched.firstName && errors.firstName}
-                                sx={{ gridColumn: "span 2" }}
-                            />
-                            <TextField
-                                fullWidth
-                                variant="filled"
-                                type="text"
-                                label="Last Name"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.lastName}
-                                name="lastName"
-                                error={!!touched.lastName && !!errors.lastName}
-                                helperText={touched.lastName && errors.lastName}
-                                sx={{ gridColumn: "span 2" }}
-                            />
-                            <TextField
-                                fullWidth
-                                variant="filled"
-                                type="text"
-                                label="Email"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.email}
-                                name="email"
-                                error={!!touched.email && !!errors.email}
-                                helperText={touched.email && errors.email}
-                                sx={{ gridColumn: "span 4" }}
-                            />
-                            <TextField
-                                fullWidth
-                                variant="filled"
-                                type="text"
-                                label="Contact Number"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.contact}
-                                name="contact"
-                                error={!!touched.contact && !!errors.contact}
-                                helperText={touched.contact && errors.contact}
-                                sx={{ gridColumn: "span 4" }}
-                            />
-                            <TextField
-                                fullWidth
-                                variant="filled"
-                                type="text"
-                                label="Address 1"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.address1}
-                                name="address1"
-                                error={!!touched.address1 && !!errors.address1}
-                                helperText={touched.address1 && errors.address1}
-                                sx={{ gridColumn: "span 4" }}
-                            />
-                        </Box>
-                        <Box display="flex" justifyContent="end" mt="20px">
-                            <Button  type="submit" color="secondary" variant="contained">
-                                Create User
-                            </Button>
-                        </Box>
-                    </form>
-                )}
-            </Formik>
-        </Box>   
-    );
+            <Box display="flex" justifyContent="end" mt={2}>
+              <Button type="submit" color="secondary" variant="contained">
+                Create User
+              </Button>
+            </Box>
+          </Form>
+        )}
+      </Formik>
+    </Box>
+  );
 };
 
 export default AddForm;

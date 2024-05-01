@@ -1,4 +1,31 @@
 import User from "../models/UserSchema.js";
+export const createUser = async (req, res) => {
+  const { email, password, name, role, phone, image } = req.body;
+  console.log("🚀 ~ createUser ~ req.body:", req.body);
+  try {
+    let user;
+    user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ message: "User already exist" });
+    }
+    user = new User({
+      name,
+      email,
+      password,
+      role,
+      phone,
+      photo: image,
+    });
+    await user.save();
+    res
+      .status(200)
+      .json({ success: true, message: "user successfull created" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" + error });
+  }
+};
 export const updateUser = async (req, res) => {
   const id = req.params.id;
   try {

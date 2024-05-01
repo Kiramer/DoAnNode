@@ -15,6 +15,9 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import CategoryIcon from "@mui/icons-material/Category";
+import BusinessIcon from "@mui/icons-material/Business";
+import userImage from "../../../assets/images/user.png";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -95,7 +98,7 @@ const Sidebar = () => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={`../../assets/images/user.png`}
+                  src={userImage}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -139,20 +142,33 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="Contacts Information"
-              to="/admin/contacts"
-              icon={<ContactsOutlinedIcon />}
+              title="Quản lý sản phẩm"
+              to="/admin/products"
+              icon={<CalendarTodayOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Hoá đơn"
+              title="Quản lý danh mục"
+              to="/admin/products"
+              icon={<CategoryIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Quản lý thương hiệu"
+              to="/admin/invoices"
+              icon={<BusinessIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Quản lý hoá đơn"
               to="/admin/invoices"
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
-
             <Typography
               variant="h6"
               color={colors.grey[300]}
@@ -167,13 +183,7 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-            <Item
-              title="Danh mục sản phẩm"
-              to="/admin/products"
-              icon={<CalendarTodayOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+
             <Item
               title="FAQ Page"
               to="/admin/faq"
