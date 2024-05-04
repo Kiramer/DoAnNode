@@ -1,97 +1,44 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   Box,
-  Typography,
-  useTheme,
-  IconButton,
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  Button,
+  IconButton,
+  useTheme,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
-import { mockDataTeam } from "../../../data/mockData";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "../../../components/Header/Header";
-import EditProductForm from "../productsForm/EditProductForm";
-
-const Products = () => {
+import { useEffect, useState } from "react";
+import { BASE_URL } from "../../../config";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddForm from "./createCategory";
+const Category = () => {
   const theme = useTheme();
+  const [data, setData] = useState([]);
   const colors = tokens(theme.palette.mode);
-  const [data, setData] = useState(mockDataTeam);
-  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [editItem, setEditItem] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
-
-  const handleUpdate = (updatedItem) => {
-    const newData = data.map((item) => {
-      if (item.id === updatedItem.id) {
-        return updatedItem;
-      }
-      return item;
-    });
-    setData(newData);
-    handleCloseEditDialog();
-  };
-
-  const handleDelete = () => {
-    const newData = data.filter((item) => item.id !== deleteId);
-    setData(newData);
-    handleCloseDeleteDialog();
-    console.log("Deleted row ID:", deleteId);
-  };
-
-  const handleClickOpenEditDialog = (item) => {
-    setEditItem(item);
-    setOpenEditDialog(true);
-  };
-
-  const handleClickOpenDeleteDialog = (id) => {
-    setDeleteId(id);
-    setOpenDeleteDialog(true);
-  };
-
-  const handleCloseEditDialog = () => {
-    setOpenEditDialog(false);
-  };
-
-  const handleCloseDeleteDialog = () => {
-    setOpenDeleteDialog(false);
-  };
-  const handleAddProduct = () => {
-    
-  };
-
+  const [change, setChange] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch(`${BASE_URL}/procategories/all`);
+      const data = await result.json();
+      setData(data.data);
+    };
+    fetchData();
+  }, [change]);
   const columns = [
-    { field: "productId", headerName: "Product ID" },
+    { field: "_id", headerName: "ID", flex: 0.5 },
     {
-      field: "name",
+      field: "title",
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
-    {
-      field: "category",
-      headerName: "Category",
-      flex: 1,
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "cost",
-      headerName: "Cost",
-      flex: 1,
-      renderCell: (params) => (
-        <Typography color={colors.greenAccent[500]}>
-          ${params.row.cost}
-        </Typography>
-      ),
-    },
-    { field: "description", headerName: "Description", flex: 2 },
     {
       field: "actions",
       headerName: "Actions",
@@ -100,13 +47,7 @@ const Products = () => {
       renderCell: (params) => (
         <>
           <IconButton
-            onClick={() => handleClickOpenEditDialog(params.row)}
-            color="primary"
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => handleClickOpenDeleteDialog(params.id)}
+            onClick={() => handleClickOpenDeleteDialog(params.row)}
             color="secondary"
           >
             <DeleteIcon />
@@ -115,24 +56,58 @@ const Products = () => {
       ),
     },
   ];
+  const handleCreate = async (data) => {
+    console.log("🚀 ~ handleCreate ~ data:", data);
+    const res = await fetch(`${BASE_URL}/procategories/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    setChange(!change);
+    handleCloseCreateDialog();
+  };
+  const handleDelete = async () => {
+    const res = await fetch(`${BASE_URL}/procategories/delete/${deleteId}`, {
+      method: "DELETE",
+    });
+    setChange(!change);
+    handleCloseDeleteDialog();
+  };
+
+  const handleClickOpenCreateDialog = () => {
+    setOpenCreateDialog(true);
+  };
+
+  const handleClickOpenDeleteDialog = (row) => {
+    setDeleteId(row._id);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleCloseCreateDialog = () => {
+    setOpenCreateDialog(false);
+  };
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
+  };
 
   return (
     <Box m="20px">
-      <Header title="PRODUCTS" subtitle="Managing Products" />
+      <Header title="CATEGORY" subtitle="List of Categories" />
       <Button
         variant="contained"
         color="primary"
-        onClick={handleAddProduct}
+        onClick={handleClickOpenCreateDialog}
         sx={{
           mt: 2,
-          mb: 4,
           backgroundColor: "secondary.main",
         }}
       >
-        Add New Product
+        Add New Category
       </Button>
       <Box
-        m="10px 0 0 0"
+        m="40px 0 0 0"
         height="100vh"
         sx={{
           "& .MuiDataGrid-root": {
@@ -158,19 +133,21 @@ const Products = () => {
           "& .MuiCheckbox-root": {
             color: `${colors.greenAccent[200]} !important`,
           },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: `${colors.grey[100]} !important`,
+          },
         }}
       >
-        <DataGrid rows={data} columns={columns} />
+        <DataGrid rows={data} columns={columns} getRowId={(item) => item._id} />
       </Box>
-      <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
+      <Dialog open={openCreateDialog}>
         <DialogContent>
-          <EditProductForm userData={editItem} updateUser={handleUpdate} />
+          <AddForm createCategory={handleCreate} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseEditDialog}>Close</Button>
+          <Button onClick={handleCloseCreateDialog}>Close</Button>
         </DialogActions>
       </Dialog>
-
       <Dialog
         open={openDeleteDialog}
         onClose={handleClickOpenDeleteDialog}
@@ -195,4 +172,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Category;

@@ -150,14 +150,14 @@ const Sidebar = () => {
             />
             <Item
               title="Quản lý danh mục"
-              to="/admin/products"
+              to="/admin/category"
               icon={<CategoryIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Quản lý thương hiệu"
-              to="/admin/invoices"
+              to="/admin/brand"
               icon={<BusinessIcon />}
               selected={selected}
               setSelected={setSelected}
