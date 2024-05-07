@@ -11,12 +11,13 @@
 // import ProtectedRouter from "./ProtectedRouter";
 import { Routes, Route } from "react-router-dom";
 import Admin from "../scenes/Admin/dashboard/index";
+import Home from "../scenes/Shop/Home/index";
 
 const Routers = () => {
   return (
     <Routes>
-      {/* <Route path="/" element={<Home />} />
-      <Route path="/home" element={<Home />} /> */}
+      <Route path="/" element={<Home />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/admin/*" element={<Admin />} />
       {/* <Route path="/doctors" element={<Doctor />} />
       <Route path="/doctors/:id" element={<DoctorDetail />} />

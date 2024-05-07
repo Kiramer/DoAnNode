@@ -1,8 +1,8 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header/Header";
-import LineChart from "../../../components/LineChart";
-import BarChart from "../../../components/BarChart";
+import LineChart from "../../../components/Chart/LineChart";
+import BarChart from "../../../components/Chart/BarChart";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";

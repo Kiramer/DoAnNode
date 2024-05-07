@@ -1,7 +1,7 @@
 import { useTheme } from "@mui/material";
-import { tokens } from "../theme";
+import { tokens } from "../../theme";
 import { ResponsivePie} from "@nivo/pie";
-import { mockPieData as data } from "../data/mockData";
+import { mockPieData as data } from "../../data/mockData";
 
 const PieChart = () => {
   const theme = useTheme();
