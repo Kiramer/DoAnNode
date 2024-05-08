@@ -35,22 +35,14 @@ const EditForm = ({ userData, updateUser }) => {
         validationSchema={userSchema}
         onSubmit={updateUser}
       >
-        <Form>
-          <Box
-            display="grid"
-            gap="30px"
-            gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-            sx={{
-              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-            }}
-          >
+        <Form style={{ width: "500px" }}>
+          <Box display="flex" flexDirection={"column"} m={2} gap={2}>
             <Field
               as={TextField}
               fullWidth
               variant="filled"
               label="ID"
               name="_id"
-              sx={{ gridColumn: "span 4" }}
               disabled
             />
             <Field
@@ -59,7 +51,6 @@ const EditForm = ({ userData, updateUser }) => {
               variant="filled"
               label="Full Name"
               name="name"
-              sx={{ gridColumn: "span 2" }}
             />
             <Field
               as={TextField}
@@ -67,7 +58,6 @@ const EditForm = ({ userData, updateUser }) => {
               variant="filled"
               label="Phone Number"
               name="phone"
-              sx={{ gridColumn: "span 2" }}
             />
             <Field
               as={TextField}
@@ -75,9 +65,8 @@ const EditForm = ({ userData, updateUser }) => {
               variant="filled"
               label="Email"
               name="email"
-              sx={{ gridColumn: "span 4" }}
             />
-            <FormControl fullWidth sx={{ gridColumn: "span 4" }}>
+            <FormControl fullWidth >
               <InputLabel id="access-label">Role</InputLabel>
               <Field
                 as={Select}

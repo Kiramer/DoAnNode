@@ -1,6 +1,7 @@
 import Product from "../models/ProductSchema.js";
 export const createProduct = async (req, res) => {
-  const { title, description, price, category, brand, quantity } = req.body;
+  const { title, description, price, category, brand, quantity, images } =
+    req.body;
   try {
     const product = new Product({
       title,
@@ -9,6 +10,7 @@ export const createProduct = async (req, res) => {
       category,
       brand,
       quantity,
+      images,
     });
     await Product.create(product);
     res.status(200).json({

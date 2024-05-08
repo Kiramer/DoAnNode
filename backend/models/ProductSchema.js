@@ -32,7 +32,7 @@ var productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    images: { type: String, default: null },
+    images: { type: String },
     tags: String,
     reviews: [{ type: mongoose.Types.ObjectId, ref: "Review" }],
     averageRating: {

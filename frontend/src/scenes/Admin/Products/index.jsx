@@ -12,33 +12,38 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
-import { mockDataTeam } from "../../../data/mockData";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "../../../components/Header/Header";
-import EditProductForm from "../productsForm/EditProductForm";
+import EditProductForm from "./EditProduct";
 import { BASE_URL } from "../../../config";
 import AddForm from "./AddProduct";
 const Products = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [data, setData] = useState(mockDataTeam);
+  const [data, setData] = useState([]);
+  const [category, setCategory] = useState();
+  const [brand, setBrand] = useState();
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [change, setChange] = useState(false);
-  const category = fetch(`${BASE_URL}/procategories/all`);
   useEffect(() => {
     const fetchCategory = async () => {
       const result = await fetch(`${BASE_URL}/procategories/all`);
       const data = await result.json();
-      setData(data.data);
+      setCategory(data.data);
+    };
+    const fetchBrand = async () => {
+      const result = await fetch(`${BASE_URL}/brands/all`);
+      const data = await result.json();
+      setBrand(data.data);
     };
     fetchCategory();
+    fetchBrand();
   }, []);
-  console.log("🚀 ~ AddForm ~ category:", category);
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch(`${BASE_URL}/products/all`);
@@ -47,12 +52,24 @@ const Products = () => {
     };
     fetchData();
   }, [change]);
-  const handleUpdate = (updatedItem) => {
+  const handleUpdate = async (updatedItem) => {
+    const res = await fetch(`${BASE_URL}/products/update/${updatedItem._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedItem),
+    });
+    setChange(!change);
     handleCloseEditDialog();
   };
 
-  const handleDelete = () => {
-    handleCloseDeleteDialog();
+  const handleDelete = async () => {
+    const res = await fetch(`${BASE_URL}/products/delete/${deleteId}`, {
+      method: "DELETE",
+    });
+    setChange(!change);
+    handleCloseDeleteDialog(false);
   };
 
   const handleClickOpenEditDialog = (item) => {
@@ -76,18 +93,45 @@ const Products = () => {
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
   };
-  const handleAddProduct = (data) => {
-    console.log("add product");
+  const handleAddProduct = async (data) => {
+    const res = await fetch(`${BASE_URL}/products/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    setChange(!change);
     setOpenCreateDialog(false);
   };
 
   const columns = [
-    { field: "productId", headerName: "Product ID" },
+    { field: "_id", headerName: "Product ID" },
     {
-      field: "name",
+      field: "title",
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
+    },
+    {
+      field: "images",
+      headerName: "Image",
+      flex: 1,
+      renderCell: ({ row: { images } }) => {
+        return (
+          <div>
+            <img
+              src={images}
+              alt=""
+              style={{
+                width: "50px",
+                padding: "5px",
+                borderRadius: "50%",
+              }}
+            />
+          </div>
+        );
+      },
     },
     {
       field: "category",
@@ -96,14 +140,9 @@ const Products = () => {
       cellClassName: "name-column--cell",
     },
     {
-      field: "cost",
+      field: "price",
       headerName: "Cost",
       flex: 1,
-      renderCell: (params) => (
-        <Typography color={colors.greenAccent[500]}>
-          ${params.row.cost}
-        </Typography>
-      ),
     },
     { field: "description", headerName: "Description", flex: 2 },
     {
@@ -174,11 +213,16 @@ const Products = () => {
           },
         }}
       >
-        <DataGrid rows={""} columns={columns} />
+        <DataGrid rows={data} columns={columns} getRowId={(row) => row._id} />
       </Box>
       <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
         <DialogContent>
-          <EditProductForm userData={editItem} updateUser={handleUpdate} />
+          <EditProductForm
+            category={category}
+            brand={brand}
+            productData={editItem}
+            updateProduct={handleUpdate}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseEditDialog}>Close</Button>
@@ -186,7 +230,11 @@ const Products = () => {
       </Dialog>
       <Dialog open={openCreateDialog} onClose={handleCloseCreateDialog}>
         <DialogContent>
-          <AddForm createProduct={handleAddProduct} />
+          <AddForm
+            brand={brand}
+            category={category}
+            createProduct={handleAddProduct}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseEditDialog}>Close</Button>

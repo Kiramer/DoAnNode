@@ -12,9 +12,8 @@ import { Formik, Field, Form } from "formik";
 import * as yup from "yup";
 import Header from "../../../components/Header/Header";
 import { useState } from "react";
+import { getBase64 } from "../../../utils/base64.js";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { getBase64 } from "../../../utils/base64";
-import { BASE_URL } from "../../../config";
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -27,27 +26,26 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-const AddForm = ({ createProduct }) => {
+const AddForm = ({ brand, category, createProduct }) => {
   const [base64Image, setBase64Image] = useState("");
 
   const checkoutSchema = yup.object().shape({
     title: yup.string().required("required"),
-    description: yup.string().email("invalid email").required("required"),
-    price: yup.string().required("Access level is required"),
+    description: yup.string().required("required"),
+    price: yup.string().required("required"),
     category: yup.string().required("required"),
     brand: yup.string().required("required"),
     quantity: yup.string().required("required"),
-    image: yup.string().required("required"),
   });
-  
+
   const initialValues = {
     title: "",
     description: "",
-    price: "",
+    price: 0,
     category: "",
     brand: "",
-    quantity: "",
-    image: "",
+    quantity: 0,
+    images: "",
   };
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
@@ -64,7 +62,7 @@ const AddForm = ({ createProduct }) => {
       <Header title="CREATE PRODUCT" subtitle="Create New Product" />
       <Formik
         onSubmit={(values) => {
-          values.image = base64Image;
+          values.images = base64Image;
           createProduct(values);
         }}
         initialValues={initialValues}
@@ -83,8 +81,8 @@ const AddForm = ({ createProduct }) => {
               <Field
                 as={TextField}
                 fullWidth
-                label="Discription"
-                name="discription"
+                label="Description"
+                name="description"
                 variant="outlined"
               />
               <Field
@@ -101,23 +99,34 @@ const AddForm = ({ createProduct }) => {
                 name="quantity"
                 variant="outlined"
               />
-              <Field
-                as={TextField}
-                fullWidth
-                label="Address"
-                name="address"
-                variant="outlined"
-              />
               <FormControl fullWidth sx={{ gridColumn: "span 4" }}>
-                <InputLabel id="access-label">Role</InputLabel>
+                <InputLabel id="category-label">Category</InputLabel>
                 <Field
                   as={Select}
-                  labelId="access-label"
-                  label="Role"
-                  name="role"
+                  labelId="category-label"
+                  label="Category"
+                  name="category"
                 >
-                  <MenuItem value="admin">Admin</MenuItem>
-                  <MenuItem value="user">User</MenuItem>
+                  {category.map((item, index) => (
+                    <MenuItem key={index} value={item.title}>
+                      {item.title}
+                    </MenuItem>
+                  ))}
+                </Field>
+              </FormControl>
+              <FormControl fullWidth sx={{ gridColumn: "span 4" }}>
+                <InputLabel id="brand-label">Brand</InputLabel>
+                <Field
+                  as={Select}
+                  labelId="brand-label"
+                  label="Brand"
+                  name="brand"
+                >
+                  {brand.map((item, index) => (
+                    <MenuItem key={index} value={item.title}>
+                      {item.title}
+                    </MenuItem>
+                  ))}
                 </Field>
               </FormControl>
               <InputLabel id="image-label">Image:</InputLabel>
@@ -145,7 +154,7 @@ const AddForm = ({ createProduct }) => {
 
             <Box display="flex" justifyContent="end" mt={2}>
               <Button type="submit" color="secondary" variant="contained">
-                Create User
+                Create Product
               </Button>
             </Box>
           </Form>
