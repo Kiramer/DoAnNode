@@ -60,7 +60,7 @@ export const deleteProduct = async (req, res) => {
 export const getSingleProduct = async (req, res) => {
   const id = req.params.id;
   try {
-    const product = await Product.findById(id).select("-password");
+    const product = await Product.findById(id);
     res.status(200).json({
       success: true,
       message: "Product Found",
@@ -75,13 +75,7 @@ export const getSingleProduct = async (req, res) => {
 };
 export const getAllProduct = async (req, res) => {
   try {
-    const products = await Product.find({}).select("-password");
-    if (products.length === 0) {
-      res.status(200).json({
-        success: true,
-        message: "Not Product Found",
-      });
-    }
+    const products = await Product.find({});
     res.status(200).json({
       success: true,
       message: "Products Found",

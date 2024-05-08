@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -17,44 +17,58 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "../../../components/Header/Header";
 import EditProductForm from "../productsForm/EditProductForm";
-
+import { BASE_URL } from "../../../config";
+import AddForm from "./AddProduct";
 const Products = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [data, setData] = useState(mockDataTeam);
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
-
+  const [change, setChange] = useState(false);
+  const category = fetch(`${BASE_URL}/procategories/all`);
+  useEffect(() => {
+    const fetchCategory = async () => {
+      const result = await fetch(`${BASE_URL}/procategories/all`);
+      const data = await result.json();
+      setData(data.data);
+    };
+    fetchCategory();
+  }, []);
+  console.log("🚀 ~ AddForm ~ category:", category);
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch(`${BASE_URL}/products/all`);
+      const data = await result.json();
+      setData(data.data);
+    };
+    fetchData();
+  }, [change]);
   const handleUpdate = (updatedItem) => {
-    const newData = data.map((item) => {
-      if (item.id === updatedItem.id) {
-        return updatedItem;
-      }
-      return item;
-    });
-    setData(newData);
     handleCloseEditDialog();
   };
 
   const handleDelete = () => {
-    const newData = data.filter((item) => item.id !== deleteId);
-    setData(newData);
     handleCloseDeleteDialog();
-    console.log("Deleted row ID:", deleteId);
   };
 
   const handleClickOpenEditDialog = (item) => {
     setEditItem(item);
     setOpenEditDialog(true);
   };
-
+  const handleClickOpenCreateDialog = () => {
+    setOpenCreateDialog(true);
+  };
   const handleClickOpenDeleteDialog = (id) => {
     setDeleteId(id);
     setOpenDeleteDialog(true);
   };
-
+  const handleCloseCreateDialog = () => {
+    setOpenCreateDialog(false);
+  };
   const handleCloseEditDialog = () => {
     setOpenEditDialog(false);
   };
@@ -62,8 +76,9 @@ const Products = () => {
   const handleCloseDeleteDialog = () => {
     setOpenDeleteDialog(false);
   };
-  const handleAddProduct = () => {
-    
+  const handleAddProduct = (data) => {
+    console.log("add product");
+    setOpenCreateDialog(false);
   };
 
   const columns = [
@@ -121,7 +136,7 @@ const Products = () => {
       <Button
         variant="contained"
         color="primary"
-        onClick={handleAddProduct}
+        onClick={handleClickOpenCreateDialog}
         sx={{
           mt: 2,
           mb: 4,
@@ -159,11 +174,19 @@ const Products = () => {
           },
         }}
       >
-        <DataGrid rows={data} columns={columns} />
+        <DataGrid rows={""} columns={columns} />
       </Box>
       <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
         <DialogContent>
           <EditProductForm userData={editItem} updateUser={handleUpdate} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEditDialog}>Close</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openCreateDialog} onClose={handleCloseCreateDialog}>
+        <DialogContent>
+          <AddForm createProduct={handleAddProduct} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseEditDialog}>Close</Button>

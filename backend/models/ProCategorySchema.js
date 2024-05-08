@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 // Declare the Schema of the Mongo model
-var prodcategorySchema = new mongoose.Schema(
+var procategorySchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -16,4 +16,4 @@ var prodcategorySchema = new mongoose.Schema(
 );
 
 //Export the model
-export default mongoose.model("PCategory", prodcategorySchema);
+export default mongoose.model("ProCategory", procategorySchema);
