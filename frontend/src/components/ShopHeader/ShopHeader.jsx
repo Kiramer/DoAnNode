@@ -3,7 +3,7 @@ import './ShopHeader.css'
 import logo from '../../assets/images/logo.png';
 import cart_icon from '../../assets/images/cart_icon.png';
 
-const Navbar = () =>{
+const ShopHeader = () =>{
     const[menu, setMenu] = useState("home");
 
     return(
@@ -15,7 +15,7 @@ const Navbar = () =>{
             <ul className="nav-menu">
                 <li onClick={()=>{setMenu("home")}}>Home{menu ==="home"?<hr/>:<></>}</li>
                 <li onClick={()=>{setMenu("contact")}}>Contact{ menu==="contact"?<hr/>:<></>}</li>
-                <li onClick={()=>{setMenu("danhmuc")}}>Danh mục{ menu==="danhmuc"?<hr/>:<></>}</li>
+                <li onClick={()=>{setMenu("category")}}>Danh mục{ menu==="category"?<hr/>:<></>}</li>
             </ul>
             <div className="nav-login-cart">
                 <button>Login</button>
@@ -27,4 +27,4 @@ const Navbar = () =>{
     )
 }
 
-export default Navbar;
+export default ShopHeader;
