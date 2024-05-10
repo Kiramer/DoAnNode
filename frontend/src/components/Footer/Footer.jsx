@@ -1,6 +1,7 @@
 import React from "react";
 import './Footer.css';
 import { Link } from "react-router-dom";
+import { FaLinkedin, FaSquareGithub,FaFacebook,FaSquareInstagram } from "react-icons/fa6";
 
 
 const Footer = () => {
@@ -16,6 +17,20 @@ const Footer = () => {
                 <address>Address: VQ4P+249, Phường Tân Phú, Quận 9, Thành phố Hồ Chí Minh</address>
                 <a href="tel:+84392927737">Phone Number: +84 392927737</a>
                 <a href="mailto:minhquan@gmail.com">Email: minhquan@gmail.com</a>
+              </div>
+              <div className="social-icons">
+                <a href="">
+                  <FaLinkedin/>
+                </a>
+                <a href="">
+                  <FaSquareGithub/>
+                </a>
+                <a href="">
+                  <FaFacebook/>
+                </a>
+                <a href="">
+                  <FaSquareInstagram/>
+                </a>
               </div>
             </div>
 

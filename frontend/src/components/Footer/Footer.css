@@ -76,4 +76,21 @@
     border-top: 1px solid #2c3e50;
     font-size: 14px;
   }
-  
+.social-icons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.social-icons a {
+    text-decoration: none;
+    color: #fdb933; 
+    font-size: 1.6rem; 
+    border-radius: 50%; 
+    transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease;
+}
+
+.social-icons a:hover {
+    background: #fdb933;
+    color: #1a1a1a; 
+    transform: scale(1.1);
+}
