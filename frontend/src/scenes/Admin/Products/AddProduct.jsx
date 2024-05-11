@@ -107,8 +107,8 @@ const AddForm = ({ brand, category, createProduct }) => {
                   label="Category"
                   name="category"
                 >
-                  {category.map((item, index) => (
-                    <MenuItem key={index} value={item.title}>
+                  {category.map((item) => (
+                    <MenuItem key={item._id} value={item.title}>
                       {item.title}
                     </MenuItem>
                   ))}
@@ -122,8 +122,8 @@ const AddForm = ({ brand, category, createProduct }) => {
                   label="Brand"
                   name="brand"
                 >
-                  {brand.map((item, index) => (
-                    <MenuItem key={index} value={item.title}>
+                  {brand.map((item) => (
+                    <MenuItem key={item._id} value={item.title}>
                       {item.title}
                     </MenuItem>
                   ))}

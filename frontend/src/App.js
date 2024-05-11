@@ -1,10 +1,10 @@
-
+import { memo } from "react";
 import Layout from "./layout/Layout";
+
+const MemoizedLayout = memo(Layout);
+
 function App() {
-  return (
-    
-    <Layout />
-  );
+  return <MemoizedLayout />;
 }
 
 export default App;

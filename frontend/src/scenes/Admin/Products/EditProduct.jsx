@@ -105,8 +105,8 @@ const EditForm = ({ category, brand, productData, updateProduct }) => {
                 label="Category"
                 name="category"
               >
-                {category.map((item, index) => (
-                  <MenuItem key={index} value={item.title}>
+                {category.map((item) => (
+                  <MenuItem key={item._id} value={item.title}>
                     {item.title}
                   </MenuItem>
                 ))}
@@ -120,8 +120,8 @@ const EditForm = ({ category, brand, productData, updateProduct }) => {
                 label="Brand"
                 name="brand"
               >
-                {brand.map((item, index) => (
-                  <MenuItem key={index} value={item.title}>
+                {brand.map((item) => (
+                  <MenuItem key={item._id} value={item.title}>
                     {item.title}
                   </MenuItem>
                 ))}
