@@ -1,10 +1,6 @@
-
 import Layout from "./layout/Layout";
 function App() {
-  return (
-    
-    <Layout />
-  );
+  return <Layout />;
 }
 
 export default App;
