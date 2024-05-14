@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
-import "./LoginSignup.css";
+import "./LoginClient.css";
 import { BASE_URL } from "../../../config";
 import { useNavigate } from "react-router-dom";
 import { authContext } from "../../../context/AuthContext";
 
-const LoginSignup = () => {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+const LoginClient = () => {
+  const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const { dispatch } = useContext(authContext);
   const handleChange = (event) => {
@@ -17,7 +17,7 @@ const LoginSignup = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const res = await fetch(`${BASE_URL}/auth/register`, {
+    const res = await fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +29,16 @@ const LoginSignup = () => {
     if (!res.ok) {
       throw new Error(result.message);
     }
-    navigate("/login");
+
+    dispatch({
+      type: "LOGIN_SUCCESS",
+      payload: {
+        user: result.data,
+        token: result.token,
+        role: result.role,
+      },
+    });
+    navigate("/");
   };
   return (
     <div className="login-client">
@@ -37,12 +46,6 @@ const LoginSignup = () => {
         <h1>Sign In</h1>
         <form>
           <div className="login-client-fields">
-            <input
-              type="text"
-              value={form.name}
-              name="name"
-              onChange={handleChange}
-            />
             <input
               type="text"
               value={form.email}
@@ -57,16 +60,16 @@ const LoginSignup = () => {
             />
           </div>
           <button type="submit" onClick={handleSubmit}>
-            Register
+            Login
           </button>
         </form>
         <p className="login-client-login">
-          You have an account?{" "}
-          <span onClick={() => navigate("/login")}>Login here</span>
+          Don't have an account?{" "}
+          <span onClick={() => navigate("/regíter")}>Register here</span>
         </p>
       </div>
     </div>
   );
 };
 
-export default LoginSignup;
+export default LoginClient;

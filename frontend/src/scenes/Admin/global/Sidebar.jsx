@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -17,7 +17,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import CategoryIcon from "@mui/icons-material/Category";
 import BusinessIcon from "@mui/icons-material/Business";
 import userImage from "../../../assets/images/user.png";
-
+import { authContext } from "../../../context/AuthContext";
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -41,7 +41,10 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-
+  const { dispatch, user, role } = useContext(authContext);
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+  };
   return (
     <Box
       sx={{
@@ -93,13 +96,23 @@ const Sidebar = () => {
           {!isCollapsed && (
             <Box mb="25px">
               <Box display="flex" justifyContent="center" alignItems="center">
-                <img
-                  alt="profile-user"
-                  width="100px"
-                  height="100px"
-                  src={userImage}
-                  style={{ cursor: "pointer", borderRadius: "50%" }}
-                />
+                {user.photo === null ? (
+                  <img
+                    alt="profile-user"
+                    width="100px"
+                    height="100px"
+                    src={userImage}
+                    style={{ cursor: "pointer", borderRadius: "50%" }}
+                  />
+                ) : (
+                  <img
+                    alt="profile-user"
+                    width="100px"
+                    height="100px"
+                    src={user.photo}
+                    style={{ cursor: "pointer", borderRadius: "50%" }}
+                  />
+                )}
               </Box>
               <Box textAlign="center">
                 <Typography
@@ -108,11 +121,25 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  UserName
+                  {user.name}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  Position
+                  {role}
                 </Typography>
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    width: "100%",
+                    backgroundColor: "red",
+                    padding: "3px",
+                    fontSize: "16px",
+                    lineHeight: "1.4",
+                    color: "white",
+                    textAlign: "center",
+                  }}
+                >
+                  Logout
+                </button>
               </Box>
             </Box>
           )}

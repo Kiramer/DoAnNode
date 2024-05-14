@@ -23,9 +23,7 @@ export const register = async (req, res) => {
       password,
     });
     await user.save();
-    res
-      .status(200)
-      .json({ success: true, message: "Register successfull " });
+    res.status(200).json({ success: true, message: "Register successfull " });
   } catch (error) {
     res
       .status(500)
@@ -56,7 +54,6 @@ export const login = async (req, res) => {
       role,
     });
   } catch (error) {
-    console.log("🚀 ~ login ~ error:", error);
     res.status(500).json({
       status: false,
       message: error,
