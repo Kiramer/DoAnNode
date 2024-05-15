@@ -15,15 +15,14 @@ import {
   CardMedia,
 } from "@mui/material";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import SearchIcon from "@mui/icons-material/Search"; // Import icon tìm kiếm
-
+import SearchIcon from "@mui/icons-material/Search";
 const Product = () => {
   const [filters, setFilters] = useState({
     category: "All",
     price: "All",
   });
 
-  const [searchQuery, setSearchQuery] = useState(""); // State để lưu giá trị trường tìm kiếm
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
