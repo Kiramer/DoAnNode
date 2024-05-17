@@ -19,19 +19,19 @@
 }
 
 .service-item img {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 43px;
 }
 
 .service-item h4 {
     margin: 0;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 600;
     color: #171717;
 }
 
 .service-item p {
     margin: 0;
-    font-size: 14px;
+    font-size: 18px;
     color: #6b7280;
 }
