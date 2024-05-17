@@ -1,21 +1,60 @@
 import { createContext, useEffect, useReducer } from "react";
 
 const initialState = {
-  cart: [],
-  totalPrice: 0,
+  cart:
+    JSON.parse(localStorage.getItem("cart")) === null
+      ? []
+      : JSON.parse(localStorage.getItem("cart")),
 };
 
 export const CartContext = createContext(initialState);
 
 const cartReducer = (state, action) => {
   switch (action.type) {
-    case "CART_START":
-      return initialState;
     case "ADD_TO_CART":
-      const updatedCart = [...state.cart, action.payload];
+      const existingItem = state.cart.find(
+        (item) => item.id === action.payload.id
+      );
+      if (existingItem) {
+        return {
+          ...state,
+          cart: state.cart.map((item) =>
+            item.id === action.payload.id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          ),
+        };
+      } else {
+        return {
+          ...state,
+          cart: [...state.cart, { ...action.payload, quantity: 1 }],
+        };
+      }
+    case "DECREASE_QUANTITY":
+      const decreaseItem = state.cart.find(
+        (item) => item.id === action.payload.id
+      );
+      if (decreaseItem && decreaseItem.quantity > 1) {
+        return {
+          ...state,
+          cart: state.cart.map((item) =>
+            item.id === action.payload.id
+              ? { ...item, quantity: item.quantity - 1 }
+              : item
+          ),
+        };
+      } else if (decreaseItem && decreaseItem.quantity === 1) {
+        return {
+          ...state,
+          cart: state.cart.filter((item) => item.id !== action.payload.id),
+        };
+      }
+      break;
+
+    case "REMOVE_FROM_CART":
       return {
         ...state,
-        cart: updatedCart,
+        cart: state.cart.filter((item) => item.id !== action.payload.id),
       };
     default:
       return state;

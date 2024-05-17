@@ -5,11 +5,13 @@ import cart_icon from "../../assets/images/cart_icon.png";
 import { Link, useNavigate } from "react-router-dom";
 import { authContext } from "../../context/AuthContext";
 import userImage from "../../assets/images/user.png";
+import { CartContext } from "../../context/CartContext";
 
 const ShopHeader = () => {
   const [menu, setMenu] = useState("home");
   const navigate = useNavigate();
   const { user, token } = useContext(authContext);
+  const { cart } = useContext(CartContext);
   return (
     <div className="navbar">
       <div onClick={() => navigate("/")} className="nav-logo">
@@ -20,24 +22,27 @@ const ShopHeader = () => {
         <li
           onClick={() => {
             setMenu("home");
+            navigate("/");
           }}
         >
-          <Link to="/"></Link> Home{menu === "home" ? <hr /> : <></>}
+          Trang Chủ{menu === "home" ? <hr /> : <></>}
         </li>
         <li
           onClick={() => {
             setMenu("contact");
+            navigate("/contact");
           }}
         >
-          <Link to="/"></Link> Contact{menu === "contact" ? <hr /> : <></>}
+          Liên hệ{menu === "contact" ? <hr /> : <></>}
         </li>
         <li
           onClick={() => {
-            setMenu("category");
+            setMenu("product");
+            navigate("/product");
           }}
         >
-          <Link to="/shopcategory"></Link>Danh mục
-          {menu === "category" ? <hr /> : <></>}
+          Sản phẩm
+          {menu === "product" ? <hr /> : <></>}
         </li>
       </ul>
       <div className="nav-login-cart">
@@ -70,7 +75,7 @@ const ShopHeader = () => {
         <Link to="/cart">
           <img src={cart_icon} alt="" />
         </Link>
-        <div className="nav-cart-count">0</div>
+        <div className="nav-cart-count">{cart?.length}</div>
       </div>
     </div>
   );
