@@ -6,6 +6,7 @@ import HomeWrapper from "../../../components/HomeWrapper/HomeWrapper.jsx";
 import ShopHeader from "../../../components/ShopHeader/ShopHeader";
 import Footer from "../../../components/Footer/Footer";
 import { BASE_URL } from "../../../config";
+import Menu from "../../../components/Menu/Menu.jsx";
 const Home = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -21,6 +22,7 @@ const Home = () => {
       <ShopHeader />
       <BannerSection />
       <HomeWrapper />
+      <Menu/>
       <Popular data={data} />
       {/* <Offer data={data} /> */}
       <Footer />

@@ -37,12 +37,12 @@ const ShopHeader = () => {
         </li>
         <li
           onClick={() => {
-            setMenu("product");
-            navigate("/product");
+            setMenu("shopcategory");
+            navigate("/shopcategory");
           }}
         >
           Sản phẩm
-          {menu === "product" ? <hr /> : <></>}
+          {menu === "shopcategory" ? <hr /> : <></>}
         </li>
       </ul>
       <div className="nav-login-cart">
