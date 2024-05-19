@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Button,
@@ -11,19 +11,18 @@ import {
   TableRow,
   Paper,
   Typography,
-  Checkbox,
-  FormControlLabel,
-
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShopHeader from "../../../components/ShopHeader/ShopHeader";
 import Footer from "../../../components/Footer/Footer";
 import { CartContext } from "../../../context/CartContext";
-import "./Cart.css"; // Đảm bảo đường dẫn CSS chính xác
+import "./Cart.css";
 
 const Cart = () => {
+  const navigate = useNavigate();
   const { cart, dispatch } = useContext(CartContext);
   console.log("🚀 ~ Cart ~ cart:", cart);
 
@@ -100,7 +99,7 @@ const Cart = () => {
           <Typography variant="h6" className="grand-total">
             Tổng tiền: {calculateGrandTotal()} VNĐ
           </Typography>
-          <Button variant="contained" color="primary" className="checkout-button">
+          <Button variant="contained" color="primary" className="checkout-button" onClick={() => navigate('/checkout')}>
             Check Out
           </Button>
         </Box>

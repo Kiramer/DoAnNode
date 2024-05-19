@@ -7,6 +7,7 @@ import LoginSignup from "../scenes/Shop/LoginSignup/LoginSignup";
 import LoginAdmin from "../scenes/Admin/Login/LoginAdmin";
 import ProtectedRouter from "./ProtectedRouter";
 import LoginClient from "../scenes/Shop/Login/LoginClient";
+import Checkout from "../scenes/Shop/Checkout";
 const Routers = () => {
   return (
     <Routes>
@@ -24,6 +25,7 @@ const Routers = () => {
       <Route path="/login" element={<LoginClient />} />
       <Route path="/register" element={<LoginSignup />} />
       <Route path="/loginadmin" element={<LoginAdmin />} />
+      <Route path="/checkout" element={<Checkout/>}/>
     </Routes>
   );
 };

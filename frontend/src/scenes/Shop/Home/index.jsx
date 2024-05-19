@@ -7,6 +7,7 @@ import ShopHeader from "../../../components/ShopHeader/ShopHeader";
 import Footer from "../../../components/Footer/Footer";
 import { BASE_URL } from "../../../config";
 import Menu from "../../../components/Menu/Menu.jsx";
+import './Home.css';
 const Home = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
