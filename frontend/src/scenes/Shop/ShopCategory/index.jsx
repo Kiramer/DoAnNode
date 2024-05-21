@@ -1,235 +1,125 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from "react";
 import {
-    Box,
-    Button,
-    Grid,
-    TextField,
-    Typography,
-    Select,
-    MenuItem,
-    FormControl,
-    InputLabel,
-    IconButton,
-    Card,
-    CardContent,
-    CardMedia,
-    Slider,
-} from '@mui/material';
+  Box,
+  Button,
+  Grid,
+  Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  IconButton,
+  Card,
+  CardContent,
+  CardMedia,
+  Slider,
+} from "@mui/material";
 
-import ShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import SearchIcon from '@mui/icons-material/Search';
-import './ShopCategory.css'; // Import CSS
-import ShopHeader from '../../../components/ShopHeader/ShopHeader';
-import Footer from '../../../components/Footer/Footer';
-
+import ShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import SearchIcon from "@mui/icons-material/Search";
+import "./ShopCategory.css"; // Import CSS
+import ShopHeader from "../../../components/ShopHeader/ShopHeader";
+import Footer from "../../../components/Footer/Footer";
+import { BASE_URL } from "../../../config";
+import { CartContext } from "../../../context/CartContext";
+import { useNavigate } from "react-router-dom";
 const ShopCategory = () => {
-    const [filters, setFilters] = useState({
-      priceRange: [10000, 500000]
-    });
-    const [sortOption, setSortOption] = useState('featured');
-    const [searchQuery, setSearchQuery] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 12;
-  
-    const handlePriceChange = (event, newValue) => {
-      setFilters({...filters, priceRange: newValue});
-    };
-  
-    const handleSortChange = (event) => {
-      setSortOption(event.target.value);
-    };
-  
-    const handleSearchChange = (event) => {
-      setSearchQuery(event.target.value);
-    };
-  
-    const formatValue = (value) => {
-      return `${value.toLocaleString('vi-VN')}₫`;
-    };
-
-  const products = [
-    {
-        id: 1,
-        name: "Product 1",
-        category: "Category A",
-        price: 100000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 2,
-        name: "Product 2",
-        category: "Category B",
-        price: 15000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 3,
-        name: "Product 3",
-        category: "Category A",
-        price: 20000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 4,
-        name: "Product 1",
-        category: "Category A",
-        price: 10000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 5,
-        name: "Product 2",
-        category: "Category B",
-        price: 15000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 6,
-        name: "Product 3",
-        category: "Category A",
-        price: 20000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 7,
-        name: "Product 1",
-        category: "Category A",
-        price: 10000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 8,
-        name: "Product 2",
-        category: "Category B",
-        price: 15000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 9,
-        name: "Product 3",
-        category: "Category A",
-        price: 20000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 10,
-        name: "Product 1",
-        category: "Category A",
-        price: 10000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 11,
-        name: "Product 2",
-        category: "Category B",
-        price: 15000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 12,
-        name: "Product 3",
-        category: "Category A",
-        price: 20000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 13,
-        name: "Product 1",
-        category: "Category A",
-        price: 10000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 14,
-        name: "Product 2",
-        category: "Category B",
-        price: 15000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 15,
-        name: "Product 3",
-        category: "Category A",
-        price: 20000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 16,
-        name: "Product 1",
-        category: "Category A",
-        price: 10000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 17,
-        name: "Product 2",
-        category: "Category B",
-        price: 15000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 18,
-        name: "Product 3",
-        category: "Category A",
-        price: 20000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-      {
-        id: 19,
-        name: "Product 3",
-        category: "Category A",
-        price: 20000,
-        image:
-          "https://caybutthan.vn/wp-content/uploads/2021/01/in-but-bi-nhua-bp2173-moi-3.jpg",
-      },
-  ];
-
-  const filteredProducts = products.filter(
-    (product) =>
-      (filters.category === 'All' || product.category === filters.category) &&
-      (product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1]) &&
-      (searchQuery === '' || product.name.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
-  const sortedAndFilteredProducts = products
-  .filter(product =>
-    (product.price >= filters.priceRange[0] && product.price <= filters.priceRange[1]) &&
-    (searchQuery === '' || product.name.toLowerCase().includes(searchQuery.toLowerCase()))
-  )
-  .sort((a, b) => {
-    switch (sortOption) {
-      case 'name-asc': return a.name.localeCompare(b.name);
-      case 'name-desc': return b.name.localeCompare(a.name);
-      case 'price-asc': return a.price - b.price;
-      case 'price-desc': return b.price - a.price;
-      default: return a.id - b.id; // Assuming 'featured' sorts by 'id' or another default metric
-    }
+  const [filters, setFilters] = useState({
+    priceRange: [10000, 2000000],
   });
+  const [sortOption, setSortOption] = useState("featured");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 12;
+  const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const { dispatch } = useContext(CartContext);
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch(`${BASE_URL}/products/all`);
+      const data = await result.json();
+      setData(data.data);
+    };
+    fetchData();
+  }, []);
+  const handlePriceChange = (event, newValue) => {
+    setFilters({ ...filters, priceRange: newValue });
+  };
+
+  const handleSortChange = (event) => {
+    setSortOption(event.target.value);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const formatValue = (value) => {
+    return `${value.toLocaleString("vi-VN")}₫`;
+  };
+
+  const filteredProducts = data.filter((product) => {
+    const matchesCategory =
+      filters.category === "All" || product.category === filters.category;
+    const inPriceRange =
+      product.price >= filters.priceRange[0] &&
+      product.price <= filters.priceRange[1];
+    const matchesSearchQuery =
+      searchQuery === "" ||
+      product.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && inPriceRange && matchesSearchQuery;
+  });
+  const sortedAndFilteredProducts = data
+    .filter(
+      (product) =>
+        product.price >= filters.priceRange[0] &&
+        product.price <= filters.priceRange[1] &&
+        (searchQuery === "" ||
+          product.name.toUpperCase().includes(searchQuery.toUpperCase()))
+    )
+    .sort((a, b) => {
+      switch (sortOption) {
+        case "name-asc":
+          return a.title.localeCompare(b.title);
+        case "name-desc":
+          return b.title.localeCompare(a.title);
+        case "price-asc":
+          return a.price - b.price;
+        case "price-desc":
+          return b.price - a.price;
+        default:
+          return a.id - b.id;
+      }
+    });
 
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
+  const handleAddToCart = (item) => {
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: {
+        id: item._id,
+        name: item.title,
+        image: item.images,
+        price: item.price,
+      },
+    });
+  };
+  const handleDetail = (id) => {
+    navigate(`/productDetail/${id}`);
+  };
   return (
     <>
       <ShopHeader />
       <Box p={3}>
-        <Box mb={2} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Box
+          mb={2}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
           <FormControl variant="outlined" sx={{ minWidth: 120, mr: 2 }}>
             <InputLabel id="sort-label">Xếp theo</InputLabel>
             <Select
@@ -245,8 +135,15 @@ const ShopCategory = () => {
               <MenuItem value="price-desc">Giá giảm dần</MenuItem>
             </Select>
           </FormControl>
-          <Box sx={{ width: 200, ml: 2, mr: 2 }}>
-            <Typography id="range-slider" gutterBottom>
+          <Box
+            style={{ display: "flex", alignItems: "center" }}
+            sx={{ width: 350, ml: 2, mr: 2 }}
+          >
+            <Typography
+              style={{ width: "80px" }}
+              id="range-slider"
+              gutterBottom
+            >
               Giá từ:
             </Typography>
             <Slider
@@ -254,18 +151,17 @@ const ShopCategory = () => {
               onChange={handlePriceChange}
               valueLabelDisplay="auto"
               min={5000}
-              max={200000}
-              getAriaLabel={() => 'Price range'}
+              max={2000000}
+              getAriaLabel={() => "Price range"}
               valueLabelFormat={formatValue}
             />
           </Box>
-          <TextField
-            label="Search"
-            variant="outlined"
+          <input
+            placeholder="Tìm Kiếm"
             size="small"
             value={searchQuery}
             onChange={handleSearchChange}
-            sx={{ ml: 2, flexGrow: 1 }}
+            style={{ borderRadius: "20px" }}
           />
           <IconButton>
             <SearchIcon />
@@ -273,27 +169,45 @@ const ShopCategory = () => {
         </Box>
         <Grid container spacing={2}>
           {sortedAndFilteredProducts
-            .slice((currentPage - 1) * productsPerPage, currentPage * productsPerPage)
+            .slice(
+              (currentPage - 1) * productsPerPage,
+              currentPage * productsPerPage
+            )
             .map((product) => (
-              <Grid item xs={12} sm={4} md={3} key={product.id}>
-                <Card>
+              <Grid item xs={12} sm={4} md={3} key={product._id}>
+                <Card
+                  onClick={() => handleDetail(product._id)}
+                  style={{ cursor: "pointer" }}
+                >
                   <CardMedia
                     component="img"
                     height="200"
-                    image={product.image}
-                    alt={product.name}
+                    image={product.images}
+                    alt={product.title}
                   />
-                  <CardContent sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 2 }}>
-                    <Box sx={{ textAlign: 'left' }}>
-                        <Typography gutterBottom variant="h6" component="div">
-                            {product.name}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                            Giá: {formatValue(product.price)}
-                        </Typography>
+                  <CardContent
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      gap: 2,
+                    }}
+                  >
+                    <Box sx={{ textAlign: "left" }}>
+                      <Typography gutterBottom variant="h6" component="div">
+                        {product.title}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        Giá: {formatValue(product.price)}
+                      </Typography>
                     </Box>
-                    <IconButton color="primary" aria-label="add to shopping cart" sx={{ marginLeft: 'auto' }}>
-                        <ShoppingCartIcon />
+                    <IconButton
+                      color="primary"
+                      aria-label="add to shopping cart"
+                      sx={{ marginLeft: "auto" }}
+                      onClick={() => handleAddToCart(product)}
+                    >
+                      <ShoppingCartIcon />
                     </IconButton>
                   </CardContent>
                 </Card>
@@ -305,7 +219,7 @@ const ShopCategory = () => {
             <Button
               key={index}
               variant="contained"
-              color={currentPage === index + 1 ? 'primary' : 'inherit'}
+              color={currentPage === index + 1 ? "primary" : "inherit"}
               onClick={() => setCurrentPage(index + 1)}
             >
               {index + 1}
@@ -313,7 +227,7 @@ const ShopCategory = () => {
           ))}
         </Box>
       </Box>
-      <Footer/>
+      <Footer />
     </>
   );
 };

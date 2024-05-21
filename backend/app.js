@@ -7,6 +7,7 @@ import authRouter from "./routes/auth.js";
 import userRouter from "./routes/users.js";
 import brandRouter from "./routes/brand.js";
 import productRouter from "./routes/product.js";
+import orderRouter from "./routes/order.js";
 import proCategoryRouter from "./routes/procategory.js";
 import bodyParser from "body-parser";
 dotenv.config();
@@ -38,6 +39,7 @@ app.use("/api/v1/brands", brandRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/procategories", proCategoryRouter);
+app.use("/api/v1/orders", orderRouter);
 
 app.listen(port, () => {
   connectdb();

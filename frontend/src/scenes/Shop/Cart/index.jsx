@@ -24,7 +24,6 @@ import "./Cart.css";
 const Cart = () => {
   const navigate = useNavigate();
   const { cart, dispatch } = useContext(CartContext);
-  console.log("🚀 ~ Cart ~ cart:", cart);
 
   const calculateTotalPrice = (unitPrice, quantity) => {
     return unitPrice * quantity;
@@ -52,7 +51,7 @@ const Cart = () => {
   const handleDelete = (item) => {
     dispatch({
       type: "REMOVE_FROM_CART",
-      payload: JSON.parse(item),
+      payload: item,
     });
   };
 
@@ -71,24 +70,37 @@ const Cart = () => {
                 <TableCell>Giá</TableCell>
                 <TableCell>Số lượng</TableCell>
                 <TableCell>Thành tiền</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {cart.map((item) => (
                 <TableRow key={item.id}>
                   <TableCell>
-                    <img src={item.image} alt={item.name} className="product-image" />
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="product-image"
+                    />
                     <Typography>{item.name}</Typography>
                   </TableCell>
                   <TableCell>{item.price} VNĐ</TableCell>
                   <TableCell>
-                    <IconButton onClick={() => handleDecrease(item)}><RemoveIcon /></IconButton>
+                    <IconButton onClick={() => handleDecrease(item)}>
+                      <RemoveIcon />
+                    </IconButton>
                     {item.quantity}
-                    <IconButton onClick={() => handleIncrease(item)}><AddIcon /></IconButton>
+                    <IconButton onClick={() => handleIncrease(item)}>
+                      <AddIcon />
+                    </IconButton>
                   </TableCell>
-                  <TableCell>{calculateTotalPrice(item.price, item.quantity)} VNĐ</TableCell>
                   <TableCell>
-                    <IconButton onClick={() => handleDelete(item)}><DeleteIcon /></IconButton>
+                    {calculateTotalPrice(item.price, item.quantity)} VNĐ
+                  </TableCell>
+                  <TableCell>
+                    <IconButton onClick={() => handleDelete(item)}>
+                      <DeleteIcon />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
@@ -99,7 +111,12 @@ const Cart = () => {
           <Typography variant="h6" className="grand-total">
             Tổng tiền: {calculateGrandTotal()} VNĐ
           </Typography>
-          <Button variant="contained" color="primary" className="checkout-button" onClick={() => navigate('/checkout')}>
+          <Button
+            variant="contained"
+            color="primary"
+            className="checkout-button"
+            onClick={() => navigate("/checkout")}
+          >
             Check Out
           </Button>
         </Box>

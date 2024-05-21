@@ -1,43 +1,45 @@
-body{
+body {
     background: rgb(241, 240, 239);
 }
 
 .cart-container {
-    width: 70%; 
-    margin: 50px auto; 
-    padding: 40px; 
+    width: 70%;
+    margin: 50px auto;
+    padding: 40px;
     background: whitesmoke;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.1); 
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
-.cart-container .MuiTextField-root .MuiInputBase-input .helperText{
-    font-size: 20px; 
-    padding: 12px; 
-  }
+
+.cart-container .MuiTextField-root .MuiInputBase-input .helperText {
+    font-size: 20px;
+    padding: 12px;
+}
 
 .total-checkout-container {
     display: flex;
-    align-items: center;
+    align-items: left;
     margin-top: 40px;
-    margin-left: 78%;
 }
 
 .checkout-button {
-    padding: 15px 30px; 
-    font-size: 18px; 
-    background-color: #007BFF; 
+    padding: 15px 30px;
+    font-size: 18px;
+    background-color: #007BFF;
     color: #fff;
     border: none;
-    border-radius: 5px; 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3); 
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .checkout-button:hover {
-    background-color: #0056b3; 
+    background-color: #0056b3;
 }
 
-input, textarea {
+input,
+textarea {
     width: 100%;
+    font-size: 18px;
     padding: 12px;
     margin: 8px 0;
     display: inline-block;
@@ -47,11 +49,11 @@ input, textarea {
 }
 
 h4 {
-    font-size: 24px; 
-    margin-bottom: 20px; 
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
 .grand-total {
-    font-size: 20px; 
-    color: #333; 
-  }
+    font-size: 20px;
+    color: #333;
+}
