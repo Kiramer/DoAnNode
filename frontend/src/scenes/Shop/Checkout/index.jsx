@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Grid
 } from "@mui/material";
 import { CartContext } from "../../../context/CartContext";
 import ShopHeader from "../../../components/ShopHeader/ShopHeader";
@@ -20,6 +21,11 @@ const Checkout = () => {
   const { cart, dispatch } = useContext(CartContext);
   const { user } = useContext(authContext);
   console.log("🚀 ~ Checkout ~ user:", user);
+
+  const formatValue = (value) => {
+    return `${value.toLocaleString("vi-VN")}VNĐ`;
+  };
+
   const calculateTotal = () => {
     const subtotal = cart.reduce(
       (total, item) => (item ? total + item.price * item.quantity : total),
@@ -69,8 +75,8 @@ const Checkout = () => {
         <Typography variant="h4" gutterBottom style={{ fontWeight: 700 }}>
           Thanh Toán
         </Typography>
-        <div>
-          <div>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={7}> {/* Left side: Product List */}
             <Typography variant="h5">Danh sách sản phẩm</Typography>
             <TableContainer component={Paper}>
               <Table>
@@ -93,21 +99,18 @@ const Checkout = () => {
                         />
                         <Typography>{item.name}</Typography>
                       </TableCell>
-                      <TableCell>{item.price} VNĐ</TableCell>
+                      <TableCell>{formatValue(item.price)}</TableCell>
                       <TableCell>{item.quantity}</TableCell>
                       <TableCell>
-                        {calculateTotalPrice(item.price, item.quantity)} VNĐ
+                        {formatValue(calculateTotalPrice(item.price, item.quantity))}
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
-            <Typography variant="h5" gutterBottom>
-              Tổng tiền: {calculateTotal()} VND
-            </Typography>
-          </div>
-          <div style={{ marginTop: "30px", width: "50%" }}>
+          </Grid>
+          <Grid item xs={12} md={5}> {/* Right side: Recipient Info and Order Summary */}
             <Typography variant="h5" gutterBottom>
               Thông tin người nhận
             </Typography>
@@ -138,16 +141,17 @@ const Checkout = () => {
                   required={true}
                 />
               </div>
-              <button
-                className="checkout-button"
-                type="submit"
-                onClick={handleSubmit}
-              >
-                Đặt hàng
-              </button>
+              <div className="form-and-total">
+                <Typography className="grand-total" variant="h5" gutterBottom>
+                    Tổng tiền: {formatValue(calculateTotal())}
+                </Typography>
+                <button className="checkout-button" onClick={handleSubmit}>
+                    Đặt hàng
+                </button>
+              </div>
             </form>
-          </div>
-        </div>
+          </Grid>
+        </Grid>
       </Box>
       <Footer />
     </>

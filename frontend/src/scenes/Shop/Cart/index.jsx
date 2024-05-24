@@ -25,6 +25,11 @@ const Cart = () => {
   const navigate = useNavigate();
   const { cart, dispatch } = useContext(CartContext);
 
+
+  const formatValue = (value) => {
+    return `${value.toLocaleString("vi-VN")}VNĐ`;
+  };
+
   const calculateTotalPrice = (unitPrice, quantity) => {
     return unitPrice * quantity;
   };
@@ -84,7 +89,7 @@ const Cart = () => {
                     />
                     <Typography>{item.name}</Typography>
                   </TableCell>
-                  <TableCell>{item.price} VNĐ</TableCell>
+                  <TableCell>{formatValue(item.price)}</TableCell>
                   <TableCell>
                     <IconButton onClick={() => handleDecrease(item)}>
                       <RemoveIcon />
@@ -107,9 +112,9 @@ const Cart = () => {
             </TableBody>
           </Table>
         </TableContainer>
-        <Box className="total-checkout-container">
+        <Box className="total-checkout-container" >
           <Typography variant="h6" className="grand-total">
-            Tổng tiền: {calculateGrandTotal()} VNĐ
+            Tổng tiền: {formatValue(calculateGrandTotal())} 
           </Typography>
           <Button
             variant="contained"

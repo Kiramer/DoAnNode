@@ -4,10 +4,10 @@ import "./Menu.css";
 import biahoso from "../../assets/images/biahoso.png";
 import but from "../../assets/images/but.png";
 import butchi from "../../assets/images/butchi.png";
-import thuoc from "../../assets/images/thuoc.png";
+import dungcuhoctap from "../../assets/images/dungcuhoctap.png";
 import vo from "../../assets/images/vo.png";
 import bangten from "../../assets/images/bangten.png";
-import hoadon from "../../assets/images/hoadon.png";
+import bamkim from "../../assets/images/bamkim.png";
 import giay from "../../assets/images/giay.png";
 import maytinh from "../../assets/images/maytinh.png";
 import kepgiay from "../../assets/images/kepgiay.png";
@@ -29,8 +29,8 @@ const categories = [
         img: butchi
     },
     {
-        label: 'Thước',
-        img: thuoc
+        label: 'Dụng cụ học tập',
+        img: dungcuhoctap
     },
     {
         label: 'Sổ, tập vở',
@@ -41,8 +41,8 @@ const categories = [
         img: bangten
     },
     {
-        label: 'Hoá đơn',
-        img: hoadon
+        label: 'Bấm ki',
+        img: bamkim
     },
     {
         label: 'Giấy các loại',

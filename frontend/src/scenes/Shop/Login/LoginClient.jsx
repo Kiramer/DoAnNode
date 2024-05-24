@@ -50,12 +50,14 @@ const LoginClient = () => {
               type="text"
               value={form.email}
               name="email"
+              placeholder="Email..."
               onChange={handleChange}
             />
             <input
               type="password"
               value={form.password}
               name="password"
+              placeholder="Password..."
               onChange={handleChange}
             />
           </div>

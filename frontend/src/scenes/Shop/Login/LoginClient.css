@@ -1,73 +1,78 @@
 .login-client {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    background: #fce3fe;
-    height: 89.9vh;
+    background: #edc0e3;
+    height: 100vh;  /* Adjusted to fill the entire height */
     margin: 0;
-    padding-top: 100px;
+    padding: 0;
 }
 
 .login-client-container {
-    width: 580px;
-    height: auto;
+    width: 620px;  
     background: white;
-    margin: auto;
-    padding: 40px 60px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    padding: 40px 20px;  
+    border-radius: 8px;
 }
 
 .login-client-container h1 {
-    margin: 20px 0px;
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
 }
 
 .login-client-fields {
     display: flex;
     flex-direction: column;
-    gap: 29px;
-    margin-top: 30px;
+    gap: 15px;
 }
 
 .login-client-fields input {
-    height: 70px;
-    width: 100%;
-    padding-left: 20px;
-    border: 1px solid #c9c9c9;
+    height: 48px;  
+    padding: 10px 20px;  
+    border: 2px solid #c9c9c9;  
     outline: none;
-    color: #5c5c5c;
-    font-size: 18px;
+    color: #333;
+    font-size: 16px;  
+    border-radius: 5px;
 }
 
 .login-client-container button {
-    width: 580px;
-    height: 70px;
+    width: 100%; 
+    height: 48px; 
     color: white;
-    background-color: red;
-    margin-top: 30px;
+    background-color: #ff4141;  
+    margin-top: 20px; 
     border: none;
-    font-size: 24px;
-    font-weight: 500;
+    border-radius: 5px; 
+    font-size: 18px;
+    font-weight: bold;
     cursor: pointer;
 }
 
 .login-client-login {
+    text-align: center;
     margin-top: 20px;
-    color: #5c5c5c;
-    font-size: 18px;
-    font-weight: 500;
+    color: #666;
+    font-size: 16px;
 }
 
 .login-client-login span {
     color: #ff4141;
-    font-weight: 600;
     cursor: pointer;
+    font-weight: bold;
 }
 
 .login-client-agree {
     display: flex;
     align-items: center;
-    gap: 20px;
-    margin-top: 25px;
-    font-size: 18px;
-    font-weight: 500;
-    color: #5c5c5c;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
 }
 
 .login-client-agree input {

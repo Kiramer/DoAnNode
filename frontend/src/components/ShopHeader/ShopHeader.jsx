@@ -10,8 +10,16 @@ import { CartContext } from "../../context/CartContext";
 const ShopHeader = () => {
   const [menu, setMenu] = useState("home");
   const navigate = useNavigate();
-  const { user, token } = useContext(authContext);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const { user, token, dispatch } = useContext(authContext);
   const { cart } = useContext(CartContext);
+
+
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    navigate("/login"); 
+  };
+
   return (
     <div className="navbar">
       <div onClick={() => navigate("/")} className="nav-logo">
@@ -29,14 +37,6 @@ const ShopHeader = () => {
         </li>
         <li
           onClick={() => {
-            setMenu("contact");
-            navigate("/contact");
-          }}
-        >
-          Liên hệ{menu === "contact" ? <hr /> : <></>}
-        </li>
-        <li
-          onClick={() => {
             setMenu("shopcategory");
             navigate("/shopcategory");
           }}
@@ -47,26 +47,23 @@ const ShopHeader = () => {
       </ul>
       <div className="nav-login-cart">
         {token && user ? (
-          <Link
-            style={{ textDecoration: "none", color: "black", width: "auto" }}
-            to={"/profile"}
+          <div
+            onClick={() => setShowDropdown(!showDropdown)}
+            style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", position: "relative" }}
           >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-              }}
-            >
-              {user.photo === null ? (
-                <img src={userImage} className="img-user" alt="" />
-              ) : (
-                <img src={user?.photo} className="img-user" alt="" />
-              )}
-
-              <h2 style={{ whiteSpace: "nowrap" }}>{user?.name}</h2>
-            </div>
-          </Link>
+            {user.photo === null ? (
+              <img src={userImage} className="img-user" alt="" />
+            ) : (
+              <img src={user.photo} className="img-user" alt="" />
+            )}
+            <h2 style={{ whiteSpace: "nowrap" }}>{user?.name}</h2>
+            {showDropdown && (
+              <div className="dropdown-menu">
+                <Link to="/profile" className="dropdown-item">Profile</Link>
+                <div onClick={handleLogout} className="dropdown-item">Logout</div>
+              </div>
+            )}
+          </div>
         ) : (
           <Link to="/login">
             <button>Login</button>

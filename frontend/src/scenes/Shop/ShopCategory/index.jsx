@@ -174,46 +174,44 @@ const ShopCategory = () => {
               currentPage * productsPerPage
             )
             .map((product) => (
-              <Grid item xs={12} sm={4} md={3} key={product._id}>
+              <Grid item xs={12} sm={6} md={3} lg={2.4} key={product._id}>
                 <Card
                   onClick={() => handleDetail(product._id)}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: "pointer", display: 'flex', flexDirection: 'column', height: '100%' }}
                 >
                   <CardMedia
                     component="img"
-                    height="200"
+                    style={{ height: 400, objectFit: 'contain' }} 
                     image={product.images}
                     alt={product.title}
                   />
                   <CardContent
-                    sx={{
-                      display: "flex",
-                      justifyContent: "flex-start",
-                      alignItems: "center",
-                      gap: 2,
+                    style={{
+                      flexGrow: 1, 
+                      display: 'flex',
+                      flexDirection: 'column', 
                     }}
                   >
-                    <Box sx={{ textAlign: "left" }}>
-                      <Typography gutterBottom variant="h6" component="div">
-                        {product.title}
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary">
-                        Giá: {formatValue(product.price)}
-                      </Typography>
-                    </Box>
-                    <IconButton
-                      color="primary"
-                      aria-label="add to shopping cart"
-                      sx={{ marginLeft: "auto" }}
-                      onClick={() => handleAddToCart(product)}
-                    >
-                      <ShoppingCartIcon />
-                    </IconButton>
+                    <Typography gutterBottom variant="h6" component="div">
+                      {product.title}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      Giá: {formatValue(product.price)}
+                    </Typography>
+                    <div style={{ marginTop: 'auto' }}> 
+                      <IconButton
+                        color="primary"
+                        aria-label="add to shopping cart"
+                        onClick={() => handleAddToCart(product)}
+                      >
+                        <ShoppingCartIcon />
+                      </IconButton>
+                    </div>
                   </CardContent>
                 </Card>
               </Grid>
             ))}
-        </Grid>
+         </Grid>
         <Box mt={3} display="flex" justifyContent="center">
           {Array.from({ length: totalPages }, (_, index) => (
             <Button
