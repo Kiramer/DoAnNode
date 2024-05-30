@@ -8,7 +8,7 @@ const Popular = ({ data }) => {
       <h1>SẢN PHẨM NỔI BẬT</h1>
       <hr />
       <div className="popular-item">
-        {data.map((item) => {
+        {data.slice(0,5).map((item) => {
           return (
             <Item
               key={item._id}

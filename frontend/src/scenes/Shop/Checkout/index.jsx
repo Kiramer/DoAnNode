@@ -76,7 +76,7 @@ const Checkout = () => {
           Thanh Toán
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={7}> {/* Left side: Product List */}
+          <Grid item xs={12} md={7}> 
             <Typography variant="h5">Danh sách sản phẩm</Typography>
             <TableContainer component={Paper}>
               <Table>

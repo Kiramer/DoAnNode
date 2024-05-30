@@ -4,6 +4,9 @@ import { Button } from "@mui/material";
 import { CartContext } from "../../context/CartContext";
 
 const Item = (props) => {
+  const formatValue = (value) => {
+    return `${value.toLocaleString("vi-VN")}VNĐ`;
+  };
   const { dispatch } = useContext(CartContext);
   const handleAddToCart = () => {
     dispatch({
@@ -15,7 +18,7 @@ const Item = (props) => {
     <div className="item">
       <img src={props.image} alt="" />
       <p>{props.name}</p>
-      <div className="item-prices">{props.price} VNĐ</div>
+      <div className="item-prices">{formatValue(props.price)}</div>
       <div>
         <Button
           variant="contained"
