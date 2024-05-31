@@ -1,26 +1,17 @@
-import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Typography,
-  Grid,
-  Paper,
-
-  Divider,
-
-} from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
+import { Box, Button, Typography, Grid, Paper, Divider } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../../../config";
 import ShopHeader from "../../../components/ShopHeader/ShopHeader";
 import Footer from "../../../components/Footer/Footer";
+import { CartContext } from "../../../context/CartContext";
 
 const ProductDetail = () => {
   const [data, setData] = useState([]);
-  console.log("🚀 ~ ProductDetail ~ data:", data);
+  const { dispatch } = useContext(CartContext);
   const id = useParams();
-  console.log("🚀 ~ ProductDetail ~ id:", id);
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch(`${BASE_URL}/products/singleProduct/${id.id}`);
@@ -31,10 +22,19 @@ const ProductDetail = () => {
   }, []);
 
   const formatValue = (value) => {
-    return `${value.toLocaleString("vi-VN")}VNĐ`;
+    return `${value?.toLocaleString("vi-VN")}VNĐ`;
   };
-
-
+  const handleAddCart = (item) => {
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: {
+        id: item._id,
+        name: item.title,
+        image: item.images,
+        price: item.price,
+      },
+    });
+  };
   return (
     <>
       <ShopHeader />
@@ -53,14 +53,12 @@ const ProductDetail = () => {
                 </Typography>
                 <Box display="flex" alignItems="center" mb={1}>
                   <Typography variant="h4" color="primary" mr={1}>
-                    {formatValue(data.price)} 
+                    {formatValue(data.price)}
                   </Typography>
                 </Box>
-                <Typography gutterBottom>
-                  {data.description}
-                </Typography>
+                <Typography gutterBottom>{data.description}</Typography>
                 <Divider />
-                <Typography variant="h5"gutterBottom>
+                <Typography variant="h5" gutterBottom>
                   Thương hiệu: {data.brand}
                 </Typography>
                 <Typography variant="h5" gutterBottom>
@@ -69,12 +67,13 @@ const ProductDetail = () => {
                 <Typography variant="h5" gutterBottom>
                   Số lượng còn: {data.quantity}
                 </Typography>
-            
+
                 <Box sx={{ mt: 2, display: "flex", gap: 2 }}>
                   <Button
                     variant="contained"
                     color="primary"
                     startIcon={<AddShoppingCartIcon />}
+                    onClick={() => handleAddCart(data)}
                   >
                     Thêm vào giỏ hàng
                   </Button>

@@ -65,7 +65,7 @@ const Cart = () => {
       <ShopHeader />
       <Box p={3} className="cart-container">
         <Typography variant="h4" gutterBottom className="cart-heading">
-          Shopping Cart
+          Giỏ hàng
         </Typography>
         <TableContainer component={Paper}>
           <Table>
@@ -122,7 +122,7 @@ const Cart = () => {
             className="checkout-button"
             onClick={() => navigate("/checkout")}
           >
-            Check Out
+            Thanh toán
           </Button>
         </Box>
       </Box>

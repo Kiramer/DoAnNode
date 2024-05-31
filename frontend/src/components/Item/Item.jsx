@@ -23,7 +23,7 @@ const Item = (props) => {
           size="small"
           onClick={handleAddToCart}
         >
-          Add to Cart
+          Thêm vào giỏ hàng
         </Button>
       </div>
     </div>

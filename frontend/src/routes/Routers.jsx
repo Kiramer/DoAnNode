@@ -9,6 +9,7 @@ import ProtectedRouter from "./ProtectedRouter";
 import LoginClient from "../scenes/Shop/Login/LoginClient";
 import Checkout from "../scenes/Shop/Checkout";
 import ProductDetail from "../scenes/Shop/ProductDetail";
+import CheckOutSuccess from "../scenes/Shop/Checkout/checkOutSuccess";
 const Routers = () => {
   return (
     <Routes>
@@ -28,6 +29,7 @@ const Routers = () => {
       <Route path="/loginadmin" element={<LoginAdmin />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/productDetail/:id" element={<ProductDetail />} />
+      <Route path="/checkoutsuccess" element={<CheckOutSuccess />} />
     </Routes>
   );
 };

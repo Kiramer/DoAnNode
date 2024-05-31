@@ -9,7 +9,7 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Grid
+  Grid,
 } from "@mui/material";
 import { CartContext } from "../../../context/CartContext";
 import ShopHeader from "../../../components/ShopHeader/ShopHeader";
@@ -17,9 +17,12 @@ import Footer from "../../../components/Footer/Footer";
 import "./Checkout.css";
 import { BASE_URL } from "../../../config";
 import { authContext } from "../../../context/AuthContext";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 const Checkout = () => {
   const { cart, dispatch } = useContext(CartContext);
   const { user } = useContext(authContext);
+  const navigate = useNavigate();
   console.log("🚀 ~ Checkout ~ user:", user);
 
   const formatValue = (value) => {
@@ -31,7 +34,7 @@ const Checkout = () => {
       (total, item) => (item ? total + item.price * item.quantity : total),
       0
     );
-    return subtotal ;
+    return subtotal;
   };
   const [form, setForm] = useState({
     name: user.name,
@@ -65,6 +68,11 @@ const Checkout = () => {
 
     if (!res.ok) {
       throw new Error(result.message);
+    } else {
+      navigate("/checkoutsuccess");
+      dispatch({
+        type: "CHECK_OUT",
+      });
     }
   };
   return (
@@ -76,7 +84,7 @@ const Checkout = () => {
           Thanh Toán
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={7}> {/* Left side: Product List */}
+          <Grid item xs={12} md={7}>
             <Typography variant="h5">Danh sách sản phẩm</Typography>
             <TableContainer component={Paper}>
               <Table>
@@ -102,7 +110,9 @@ const Checkout = () => {
                       <TableCell>{formatValue(item.price)}</TableCell>
                       <TableCell>{item.quantity}</TableCell>
                       <TableCell>
-                        {formatValue(calculateTotalPrice(item.price, item.quantity))}
+                        {formatValue(
+                          calculateTotalPrice(item.price, item.quantity)
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -110,7 +120,9 @@ const Checkout = () => {
               </Table>
             </TableContainer>
           </Grid>
-          <Grid item xs={12} md={5}> {/* Right side: Recipient Info and Order Summary */}
+          <Grid item xs={12} md={5}>
+            {" "}
+            {/* Right side: Recipient Info and Order Summary */}
             <Typography variant="h5" gutterBottom>
               Thông tin người nhận
             </Typography>
@@ -143,10 +155,10 @@ const Checkout = () => {
               </div>
               <div className="form-and-total">
                 <Typography className="grand-total" variant="h5" gutterBottom>
-                    Tổng tiền: {formatValue(calculateTotal())}
+                  Tổng tiền: {formatValue(calculateTotal())}
                 </Typography>
                 <button className="checkout-button" onClick={handleSubmit}>
-                    Đặt hàng
+                  Đặt hàng
                 </button>
               </div>
             </form>

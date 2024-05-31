@@ -25,10 +25,11 @@ import { CartContext } from "../../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 const ShopCategory = () => {
   const [filters, setFilters] = useState({
-    priceRange: [10000, 2000000],
+    priceRange: [0, 2000000],
   });
   const [sortOption, setSortOption] = useState("featured");
   const [searchQuery, setSearchQuery] = useState("");
+  console.log("🚀 ~ ShopCategory ~ searchQuery:", searchQuery);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ const ShopCategory = () => {
         product.price >= filters.priceRange[0] &&
         product.price <= filters.priceRange[1] &&
         (searchQuery === "" ||
-          product.name.toUpperCase().includes(searchQuery.toUpperCase()))
+          product.title.toLowerCase().includes(searchQuery.toLowerCase()))
     )
     .sort((a, b) => {
       switch (sortOption) {
@@ -177,19 +178,24 @@ const ShopCategory = () => {
               <Grid item xs={12} sm={6} md={3} lg={2.4} key={product._id}>
                 <Card
                   onClick={() => handleDetail(product._id)}
-                  style={{ cursor: "pointer", display: 'flex', flexDirection: 'column', height: '100%' }}
+                  style={{
+                    cursor: "pointer",
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                  }}
                 >
                   <CardMedia
                     component="img"
-                    style={{ height: 400, objectFit: 'contain' }} 
+                    style={{ height: 400, objectFit: "contain" }}
                     image={product.images}
                     alt={product.title}
                   />
                   <CardContent
                     style={{
-                      flexGrow: 1, 
-                      display: 'flex',
-                      flexDirection: 'column', 
+                      flexGrow: 1,
+                      display: "flex",
+                      flexDirection: "column",
                     }}
                   >
                     <Typography gutterBottom variant="h6" component="div">
@@ -198,7 +204,7 @@ const ShopCategory = () => {
                     <Typography variant="body2" color="textSecondary">
                       Giá: {formatValue(product.price)}
                     </Typography>
-                    <div style={{ marginTop: 'auto' }}> 
+                    <div style={{ marginTop: "auto" }}>
                       <IconButton
                         color="primary"
                         aria-label="add to shopping cart"
@@ -211,7 +217,7 @@ const ShopCategory = () => {
                 </Card>
               </Grid>
             ))}
-         </Grid>
+        </Grid>
         <Box mt={3} display="flex" justifyContent="center">
           {Array.from({ length: totalPages }, (_, index) => (
             <Button
