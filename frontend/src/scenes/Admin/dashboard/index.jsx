@@ -12,6 +12,7 @@ import Pie from "../Pie";
 import Line from "../Line";
 import Category from "../Category/category";
 import Brand from "../Brand/Brand";
+import Invoices from "../Invoices";
 
 const Admin = () => {
   const [theme, colorMode] = useMode();
@@ -34,6 +35,7 @@ const Admin = () => {
                 <Route path="/bar" element={<Bar />} />
                 <Route path="/pie" element={<Pie />} />
                 <Route path="/line" element={<Line />} />
+                <Route path="/invoices" element={<Invoices />} />
               </Routes>
             </main>
           </div>

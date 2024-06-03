@@ -67,7 +67,7 @@ const LoginClient = () => {
         </form>
         <p className="login-client-login">
           Don't have an account?{" "}
-          <span onClick={() => navigate("/regíter")}>Register here</span>
+          <span onClick={() => navigate("/register")}>Register here</span>
         </p>
       </div>
     </div>

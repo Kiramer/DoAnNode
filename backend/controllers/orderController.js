@@ -12,11 +12,16 @@ export const createOrder = async (req, res) => {
 
 export const getAllOrder = async (req, res) => {
   try {
-    const data = await OrderService.getAllOrder();
-    return res.status(200).json(data);
-  } catch (e) {
-    return res.status(404).json({
-      message: e,
+    const orders = await Order.find({});
+    res.status(200).json({
+      success: true,
+      message: "Orders Found",
+      data: orders,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "Not Order Found",
     });
   }
 };

@@ -10,6 +10,7 @@ import LoginClient from "../scenes/Shop/Login/LoginClient";
 import Checkout from "../scenes/Shop/Checkout";
 import ProductDetail from "../scenes/Shop/ProductDetail";
 import CheckOutSuccess from "../scenes/Shop/Checkout/checkOutSuccess";
+import ProtectedRouterClient from "./ProtectedRouterClient";
 const Routers = () => {
   return (
     <Routes>
@@ -27,7 +28,14 @@ const Routers = () => {
       <Route path="/login" element={<LoginClient />} />
       <Route path="/register" element={<LoginSignup />} />
       <Route path="/loginadmin" element={<LoginAdmin />} />
-      <Route path="/checkout" element={<Checkout />} />
+      <Route
+        path="/checkout"
+        element={
+          <ProtectedRouterClient allowedRoles={"user"}>
+            <Checkout />
+          </ProtectedRouterClient>
+        }
+      />
       <Route path="/productDetail/:id" element={<ProductDetail />} />
       <Route path="/checkoutsuccess" element={<CheckOutSuccess />} />
     </Routes>

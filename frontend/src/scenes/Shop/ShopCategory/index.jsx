@@ -177,7 +177,6 @@ const ShopCategory = () => {
             .map((product) => (
               <Grid item xs={12} sm={6} md={3} lg={2.4} key={product._id}>
                 <Card
-                  onClick={() => handleDetail(product._id)}
                   style={{
                     cursor: "pointer",
                     display: "flex",
@@ -190,6 +189,7 @@ const ShopCategory = () => {
                     style={{ height: 400, objectFit: "contain" }}
                     image={product.images}
                     alt={product.title}
+                    onClick={() => handleDetail(product._id)}
                   />
                   <CardContent
                     style={{
@@ -198,7 +198,7 @@ const ShopCategory = () => {
                       flexDirection: "column",
                     }}
                   >
-                    <Typography gutterBottom variant="h6" component="div">
+                    <Typography onClick={() => handleDetail(product._id)} gutterBottom variant="h6" component="div">
                       {product.title}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">

@@ -1,8 +1,13 @@
 import React from "react";
 import "./Popular.css";
 import Item from "../Item/Item";
+import { useNavigate } from "react-router-dom";
 
 const Popular = ({ data }) => {
+  const navigate = useNavigate();
+  const handleDetail = (id) => {
+    navigate(`/productDetail/${id}`);
+  };
   return (
     <div className="popular">
       <h1>SẢN PHẨM NỔI BẬT</h1>
@@ -16,6 +21,7 @@ const Popular = ({ data }) => {
               image={item.images}
               name={item.title}
               price={item.price}
+              onClick={() => handleDetail(item._id)}
             />
           );
         })}

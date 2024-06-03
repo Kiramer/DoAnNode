@@ -13,9 +13,11 @@ const Item = (props) => {
   };
   return (
     <div className="item">
-      <img src={props.image} alt="" />
-      <p>{props.name}</p>
-      <div className="item-prices">{props.price} VNĐ</div>
+      <div style={{ cursor: "pointer" }} onClick={props.onClick}>
+        <img src={props.image} alt="" />
+        <p>{props.name}</p>
+        <div className="item-prices">{props.price} VNĐ</div>
+      </div>
       <div>
         <Button
           variant="contained"

@@ -7,11 +7,7 @@ const ProtectedRouterClient = ({ children, allowedRoles }) => {
   const isAllowed = allowedRoles.includes(role);
 
   const accessibleRoute =
-    token && isAllowed ? (
-      children
-    ) : (
-      <Navigate to="/login" replace={true} />
-    );
+    token && isAllowed ? children : <Navigate to="/login" replace={true} />;
   return accessibleRoute;
 };
 
