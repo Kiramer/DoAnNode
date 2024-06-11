@@ -151,7 +151,7 @@ const ShopCategory = () => {
               value={filters.priceRange}
               onChange={handlePriceChange}
               valueLabelDisplay="auto"
-              min={5000}
+              min={0}
               max={2000000}
               getAriaLabel={() => "Price range"}
               valueLabelFormat={formatValue}
@@ -198,7 +198,12 @@ const ShopCategory = () => {
                       flexDirection: "column",
                     }}
                   >
-                    <Typography onClick={() => handleDetail(product._id)} gutterBottom variant="h6" component="div">
+                    <Typography
+                      onClick={() => handleDetail(product._id)}
+                      gutterBottom
+                      variant="h6"
+                      component="div"
+                    >
                       {product.title}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">

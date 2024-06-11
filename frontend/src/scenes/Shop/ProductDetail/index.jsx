@@ -10,6 +10,7 @@ import { CartContext } from "../../../context/CartContext";
 
 const ProductDetail = () => {
   const [data, setData] = useState([]);
+  console.log("🚀 ~ ProductDetail ~ data:", data);
   const { dispatch } = useContext(CartContext);
   const id = useParams();
   useEffect(() => {
@@ -69,14 +70,18 @@ const ProductDetail = () => {
                 </Typography>
 
                 <Box sx={{ mt: 2, display: "flex", gap: 2 }}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AddShoppingCartIcon />}
-                    onClick={() => handleAddCart(data)}
-                  >
-                    Thêm vào giỏ hàng
-                  </Button>
+                  {data.quantity === 0 ? (
+                    <h1 style={{ color: "red" }}>Sản phẩm đã hết hàng</h1>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      startIcon={<AddShoppingCartIcon />}
+                      onClick={() => handleAddCart(data)}
+                    >
+                      Thêm vào giỏ hàng
+                    </Button>
+                  )}
                 </Box>
               </Box>
             </Grid>

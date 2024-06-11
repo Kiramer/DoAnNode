@@ -17,6 +17,7 @@ const Item = (props) => {
         <img src={props.image} alt="" />
         <p>{props.name}</p>
         <div className="item-prices">{props.price} VNĐ</div>
+        <span>đã bán: {props.sold}+</span>
       </div>
       <div>
         <Button

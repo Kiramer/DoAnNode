@@ -10,7 +10,7 @@ const Popular = ({ data }) => {
   };
   return (
     <div className="popular">
-      <h1>SẢN PHẨM NỔI BẬT</h1>
+      <h1>SẢN PHẨM BÁN NHIỀU NHẤT</h1>
       <hr />
       <div className="popular-item">
         {data.slice(0, 6).map((item) => {
@@ -21,6 +21,7 @@ const Popular = ({ data }) => {
               image={item.images}
               name={item.title}
               price={item.price}
+              sold={item.sold}
               onClick={() => handleDetail(item._id)}
             />
           );

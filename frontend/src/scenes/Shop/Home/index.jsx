@@ -6,12 +6,12 @@ import ShopHeader from "../../../components/ShopHeader/ShopHeader";
 import Footer from "../../../components/Footer/Footer";
 import { BASE_URL } from "../../../config";
 import Menu from "../../../components/Menu/Menu.jsx";
-import './Home.css';
+import "./Home.css";
 const Home = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetch(`${BASE_URL}/products/all`);
+      const result = await fetch(`${BASE_URL}/products/soldproduct`);
       const data = await result.json();
       setData(data.data);
     };
@@ -22,7 +22,7 @@ const Home = () => {
       <ShopHeader />
       <BannerSection />
       <HomeWrapper />
-      <Menu/>
+      <Menu />
       <Popular data={data} />
       {/* <Offer data={data} /> */}
       <Footer />

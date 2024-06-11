@@ -41,18 +41,21 @@ const LoginSignup = () => {
               type="text"
               value={form.name}
               name="name"
+              placeholder="Name"
               onChange={handleChange}
             />
             <input
               type="text"
               value={form.email}
               name="email"
+              placeholder="email"
               onChange={handleChange}
             />
             <input
               type="password"
               value={form.password}
               name="password"
+              placeholder="password"
               onChange={handleChange}
             />
           </div>
