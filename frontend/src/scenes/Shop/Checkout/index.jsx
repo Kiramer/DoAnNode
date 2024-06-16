@@ -38,6 +38,7 @@ const Checkout = () => {
   };
   const [form, setForm] = useState({
     name: user.name,
+    email: user.email,
     phone: user.phone,
     address: user.address,
     cart: cart,
@@ -121,8 +122,6 @@ const Checkout = () => {
             </TableContainer>
           </Grid>
           <Grid item xs={12} md={5}>
-            {" "}
-            {/* Right side: Recipient Info and Order Summary */}
             <Typography variant="h5" gutterBottom>
               Thông tin người nhận
             </Typography>
@@ -131,6 +130,14 @@ const Checkout = () => {
                 <input
                   type="text"
                   value={form.name}
+                  name="name"
+                  placeholder="Họ tên"
+                  onChange={handleChange}
+                  required
+                />
+                <input
+                  type="text"
+                  value={form.email}
                   name="name"
                   placeholder="Họ tên"
                   onChange={handleChange}
