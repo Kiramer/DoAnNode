@@ -1,33 +1,30 @@
+import React, { useState } from 'react';
 import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { Formik, Field, Form } from "formik";
-import * as yup from "yup";
+  Box, Button, FormControl, InputLabel, MenuItem, Select, TextField,
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Formik, Field, Form } from 'formik';
+import * as yup from 'yup';
 import Header from "../../../components/Header/Header";
-import { useState } from "react";
 import { getBase64 } from "../../../utils/base64.js";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
   height: 1,
   overflow: "hidden",
   position: "absolute",
-  bottom: 0,
-  left: 0,
   whiteSpace: "nowrap",
-  width: 1,
+  width: 1
 });
 
 const AddForm = ({ brand, category, createProduct }) => {
   const [base64Image, setBase64Image] = useState("");
+  const [videoPreview, setVideoPreview] = useState('');
+  const [description, setDescription] = useState('');
 
   const checkoutSchema = yup.object().shape({
     title: yup.string().required("required"),
@@ -47,6 +44,7 @@ const AddForm = ({ brand, category, createProduct }) => {
     quantity: 0,
     images: "",
   };
+
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     try {
@@ -57,18 +55,45 @@ const AddForm = ({ brand, category, createProduct }) => {
       setBase64Image("");
     }
   };
+  const handleVideoUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => setVideoPreview(e.target.result);
+    reader.readAsDataURL(file);
+  };
+
+  const modules = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],     
+      ['blockquote', 'code-block'],
+      [{ 'header': 1 }, { 'header': 2 }],              
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'script': 'sub'}, { 'script': 'super' }],     
+      [{ 'indent': '-1'}, { 'indent': '+1' }],          
+      [{ 'direction': 'rtl' }],                        
+      [{ 'size': ['small', false, 'large', 'huge'] }],  
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      [{ 'color': [] }, { 'background': [] }],          
+      [{ 'font': [] }],
+      [{ 'align': [] }],
+      ['clean'],                                      
+      ['link', 'image', 'video']                   
+    ]
+  };
+
   return (
     <Box m={2}>
       <Header title="CREATE PRODUCT" subtitle="Create New Product" />
       <Formik
         onSubmit={(values) => {
           values.images = base64Image;
+          values.description = description;
           createProduct(values);
         }}
         initialValues={initialValues}
         validationSchema={checkoutSchema}
       >
-        {() => (
+        {({ setFieldValue }) => (
           <Form style={{ width: "500px" }}>
             <Box display="flex" flexDirection={"column"} m={2} gap={2}>
               <Field
@@ -78,13 +103,18 @@ const AddForm = ({ brand, category, createProduct }) => {
                 name="title"
                 variant="outlined"
               />
-              <Field
-                as={TextField}
-                fullWidth
-                label="Description"
-                name="description"
-                variant="outlined"
-              />
+              <Box>
+                <InputLabel>Description</InputLabel>
+                <ReactQuill
+                  theme="snow"
+                  value={description}
+                  onChange={(value) => {
+                    setDescription(value);
+                    setFieldValue('description', value);
+                  }}
+                  modules={modules}
+                />
+              </Box>
               <Field
                 as={TextField}
                 fullWidth
@@ -137,17 +167,28 @@ const AddForm = ({ brand, category, createProduct }) => {
               />
               <Button
                 component="label"
-                role={undefined}
                 variant="contained"
-                tabIndex={-1}
                 startIcon={<CloudUploadIcon />}
-                onChange={handleImageUpload}
               >
-                Upload file
+                Upload Image
                 <VisuallyHiddenInput
-                  name="image"
-                  labelId="image-label"
+                  accept="image/*"
+                  id="image-upload"
                   type="file"
+                  onChange={handleImageUpload}
+                />
+              </Button>
+              <Button
+                component="label"
+                variant="contained"
+                startIcon={<CloudUploadIcon />}
+              >
+                Upload Video
+                <VisuallyHiddenInput
+                  accept="video/*"
+                  id="video-upload"
+                  type="file"
+                  onChange={handleVideoUpload}
                 />
               </Button>
             </Box>
