@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-
-// Declare the Schema of the Mongo model
 var productSchema = new mongoose.Schema(
   {
     title: {
@@ -46,6 +44,4 @@ var productSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-//Export the model
 export default mongoose.model("Product", productSchema);
