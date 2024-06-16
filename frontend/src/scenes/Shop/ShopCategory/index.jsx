@@ -168,13 +168,8 @@ const ShopCategory = () => {
             <SearchIcon />
           </IconButton>
         </Box>
-        <Grid container spacing={2}>
-          {sortedAndFilteredProducts
-            .slice(
-              (currentPage - 1) * productsPerPage,
-              currentPage * productsPerPage
-            )
-            .map((product) => (
+        <Grid container spacing={2} padding="25px">
+          {sortedAndFilteredProducts.map((product) => (
               <Grid item xs={12} sm={6} md={3} lg={2.4} key={product._id}>
                 <Card
                   style={{
