@@ -1,5 +1,7 @@
 import User from "../models/UserSchema.js";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 const generateToken = (user) => {
   return jwt.sign(
     { id: user._id, role: user.role },
@@ -23,9 +25,7 @@ export const register = async (req, res) => {
       password,
     });
     await user.save();
-    res
-      .status(200)
-      .json({ success: true, message: "user successfull created" });
+    res.status(200).json({ success: true, message: "Register successfull " });
   } catch (error) {
     res
       .status(500)
@@ -56,7 +56,6 @@ export const login = async (req, res) => {
       role,
     });
   } catch (error) {
-    console.log("🚀 ~ login ~ error:", error);
     res.status(500).json({
       status: false,
       message: error,

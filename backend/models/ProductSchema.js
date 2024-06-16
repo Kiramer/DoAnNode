@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-
-// Declare the Schema of the Mongo model
 var productSchema = new mongoose.Schema(
   {
     title: {
@@ -32,12 +30,7 @@ var productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    images: [
-      {
-        public_id: String,
-        url: String,
-      },
-    ],
+    images: { type: String },
     tags: String,
     reviews: [{ type: mongoose.Types.ObjectId, ref: "Review" }],
     averageRating: {
@@ -51,6 +44,4 @@ var productSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-//Export the model
 export default mongoose.model("Product", productSchema);

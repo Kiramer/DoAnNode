@@ -1,6 +1,7 @@
 import Product from "../models/ProductSchema.js";
 export const createProduct = async (req, res) => {
-  const { title, description, price, category, brand, quantity } = req.body;
+  const { title, description, price, category, brand, quantity, images } =
+    req.body;
   try {
     const product = new Product({
       title,
@@ -9,6 +10,7 @@ export const createProduct = async (req, res) => {
       category,
       brand,
       quantity,
+      images,
     });
     await Product.create(product);
     res.status(200).json({
@@ -59,8 +61,9 @@ export const deleteProduct = async (req, res) => {
 };
 export const getSingleProduct = async (req, res) => {
   const id = req.params.id;
+  console.log("🚀 ~ getSingleProduct ~ id:", id);
   try {
-    const product = await Product.findById(id).select("-password");
+    const product = await Product.findById(id);
     res.status(200).json({
       success: true,
       message: "Product Found",
@@ -75,13 +78,7 @@ export const getSingleProduct = async (req, res) => {
 };
 export const getAllProduct = async (req, res) => {
   try {
-    const products = await Product.find({}).select("-password");
-    if (products.length === 0) {
-      res.status(200).json({
-        success: true,
-        message: "Not Product Found",
-      });
-    }
+    const products = await Product.find({});
     res.status(200).json({
       success: true,
       message: "Products Found",
@@ -94,27 +91,18 @@ export const getAllProduct = async (req, res) => {
     });
   }
 };
-//   export const getUserProfile = async (req, res) => {
-//     const userId = req.userId;
-//     try {
-//       const user = await User.findById(userId);
-
-//       if (!user) {
-//         return res
-//           .status(404)
-//           .json({ success: false, message: "User not found" });
-//       }
-
-//       const { password, ...rest } = user._doc;
-//       res.status(200).json({
-//         success: true,
-//         message: "Profile info is getting",
-//         data: { ...rest },
-//       });
-//     } catch (error) {
-//       res.status(500).json({
-//         success: false,
-//         message: "Something went wrong, cannot get",
-//       });
-//     }
-//   };
+export const getSoldProduct = async (req, res) => {
+  try {
+    const products = await Product.find({}).sort({ sold: -1 }).limit(6);
+    res.status(200).json({
+      success: true,
+      message: "Products Found",
+      data: products,
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: "No Products Found",
+    });
+  }
+};
