@@ -118,7 +118,7 @@ const Cart = () => {
                       </IconButton>
                     </TableCell>
                     <TableCell>
-                      {calculateTotalPrice(item.price, item.quantity)} VNĐ
+                      {formatValue(calculateTotalPrice(item.price, item.quantity))}
                     </TableCell>
                     <TableCell>
                       <IconButton onClick={() => handleDelete(item)}>

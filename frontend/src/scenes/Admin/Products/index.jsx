@@ -18,6 +18,7 @@ import Header from "../../../components/Header/Header";
 import EditProductForm from "./EditProduct";
 import { BASE_URL } from "../../../config";
 import AddForm from "./AddProduct.jsx";
+import 'react-quill/dist/quill.snow.css';
 const Products = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
