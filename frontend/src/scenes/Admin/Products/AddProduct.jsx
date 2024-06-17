@@ -23,7 +23,7 @@ const VisuallyHiddenInput = styled("input")({
 
 const AddForm = ({ brand, category, createProduct }) => {
   const [base64Image, setBase64Image] = useState("");
-  const [videoPreview, setVideoPreview] = useState('');
+  // const [videoPreview, setVideoPreview] = useState('');
   const [description, setDescription] = useState('');
 
   const checkoutSchema = yup.object().shape({
@@ -55,12 +55,12 @@ const AddForm = ({ brand, category, createProduct }) => {
       setBase64Image("");
     }
   };
-  const handleVideoUpload = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => setVideoPreview(e.target.result);
-    reader.readAsDataURL(file);
-  };
+  // const handleVideoUpload = (event) => {
+  //   const file = event.target.files[0];
+  //   const reader = new FileReader();
+  //   reader.onload = (e) => setVideoPreview(e.target.result);
+  //   reader.readAsDataURL(file);
+  // };
 
   const modules = {
     toolbar: [
@@ -178,7 +178,7 @@ const AddForm = ({ brand, category, createProduct }) => {
                   onChange={handleImageUpload}
                 />
               </Button>
-              <Button
+              {/* <Button
                 component="label"
                 variant="contained"
                 startIcon={<CloudUploadIcon />}
@@ -190,7 +190,7 @@ const AddForm = ({ brand, category, createProduct }) => {
                   type="file"
                   onChange={handleVideoUpload}
                 />
-              </Button>
+              </Button> */}
             </Box>
 
             <Box display="flex" justifyContent="end" mt={2}>

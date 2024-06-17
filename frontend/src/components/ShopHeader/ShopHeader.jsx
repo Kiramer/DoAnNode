@@ -6,6 +6,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { authContext } from "../../context/AuthContext";
 import userImage from "../../assets/images/user.png";
 import { CartContext } from "../../context/CartContext";
+import { Button, Dialog, DialogActions, DialogContent } from "@mui/material";
+import Profile from "../../scenes/Shop/Profile";
+import { BASE_URL } from "../../config";
 
 const ShopHeader = () => {
   const [menu, setMenu] = useState("home");
@@ -13,13 +16,30 @@ const ShopHeader = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const { user, token, dispatch } = useContext(authContext);
   const { cart } = useContext(CartContext);
-
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [change, setChange] = useState(false);
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
-    navigate("/login"); 
+    navigate("/login");
   };
-
+  const handleUpdate = async (updatedItem) => {
+    console.log("🚀 ~ handleUpdate ~ updatedItem:", updatedItem);
+    const res = await fetch(`${BASE_URL}/users/update/${updatedItem._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedItem),
+    });
+    const result = await res.json();
+    console.log("🚀 ~ handleUpdate ~ res:", result);
+    setChange(!change);
+    handleCloseEditDialog();
+  };
+  const handleCloseEditDialog = () => {
+    setOpenEditDialog(false);
+  };
   return (
     <div className="navbar">
       <div onClick={() => navigate("/")} className="nav-logo">
@@ -49,7 +69,13 @@ const ShopHeader = () => {
         {token && user ? (
           <div
             onClick={() => setShowDropdown(!showDropdown)}
-            style={{ display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", position: "relative" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              cursor: "pointer",
+              position: "relative",
+            }}
           >
             {user.photo === null ? (
               <img src={userImage} className="img-user" alt="" />
@@ -59,8 +85,15 @@ const ShopHeader = () => {
             <h2 style={{ whiteSpace: "nowrap" }}>{user?.name}</h2>
             {showDropdown && (
               <div className="dropdown-menu">
-                <Link to="/profile" className="dropdown-item">Profile</Link>
-                <div onClick={handleLogout} className="dropdown-item">Logout</div>
+                <div
+                  onClick={() => setOpenEditDialog(true)}
+                  className="dropdown-item"
+                >
+                  Profile
+                </div>
+                <div onClick={handleLogout} className="dropdown-item">
+                  Logout
+                </div>
               </div>
             )}
           </div>
@@ -74,6 +107,14 @@ const ShopHeader = () => {
         </Link>
         <div className="nav-cart-count">{cart?.length}</div>
       </div>
+      <Dialog open={openEditDialog}>
+        <DialogContent>
+          <Profile userData={user} updateUser={handleUpdate} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEditDialog}>Close</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
